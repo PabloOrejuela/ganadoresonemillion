@@ -1,0 +1,22 @@
+#wrap {
+    font-size: 1em;
+    margin: 0 auto 0 auto;
+    width: 30%;
+    min-width: 350px;
+}
+
+#logo-gom{
+    width: 300px;
+}
+
+input[type=text], input[type=password]{
+    font-size: 1em;
+}
+
+.input-group-text{
+    font-size: 1.5em;
+}
+
+#verPassword{
+    font-size: 0.8em;
+}

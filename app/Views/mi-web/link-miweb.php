@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/link-miweb.css">
+<div class="row">
+    <!-- Start col -->
+    <div class="col-lg-7 connectedSortable">
+        <!-- Mi equipo -->
+        <div class="card direct-chat direct-chat-primary mb-4">
+            <div class="card-header">
+                <h2>Hola <?= $nombre; ?></h2>
+                <h3 id="title-center">Gana con <?= NOMBRE_EMPRESA; ?>!</h3>
+            </div>
+            <div class="div-center">
+                <img src="<?= base_url(); ?>public/images/logo-gom.png" alt="logo" class="img-size-100 mr-3 img-circle mt-4 mb-4" id="logo-gom">
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="link">
+                    <h4>Aquí tienes el link a tu sitio web para registrar a un socio nuevo</h4>
+                    <label id="lbl-mensaje">Copiar el link!</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="link-miweb"
+                        value="<?= site_url().'mi-web/'.$patrocinador.'/'.$nombre;?>"
+                        readonly
+                    />
+                    
+                    <button class="btn btn-primary mt-3" id="btn-copiar-link">Copiar link</button>
+                </div>
+            </div>
+        <!-- /.card-body -->
+        </div>
+        <!-- /.Mi equipo-->
+    </div>
+    <!-- /.Start col -->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/link-miweb.js"></script>
