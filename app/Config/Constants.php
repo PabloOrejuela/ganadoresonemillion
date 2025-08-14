@@ -80,4 +80,4 @@ defined('EXIT__AUTO_MAX')      || define('EXIT__AUTO_MAX', 125);    // highest a
 
 
 //CONSTANTES PERSONALIZADAS
-defined('NOMBRE_EMPRESA')      || define('NOMBRE_EMPRESA', "Ganadores One Million");
+defined('NOMBRE_EMPRESA')      || define('NOMBRE_EMPRESA', "Gigantes One Million");
