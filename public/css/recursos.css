@@ -1,0 +1,30 @@
+#logo-gom{
+    width: 200px;
+    margin-bottom: 20px
+}
+
+#div-logo{
+    width: 50%; 
+    margin: 0 auto; 
+    text-align: center;
+    align-items: center;
+}
+
+.card{
+    width: 70%;
+}
+
+.link-descarga{
+    color:rgb(54, 32, 32) !important;
+    text-decoration: none;
+}
+
+.link-descarga:hover{
+    color:rgb(48, 143, 90) !important; 
+    text-decoration: none;
+}
+
+table{
+    margin-left: 5px;
+    margin-top: 10px;
+}

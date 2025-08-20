@@ -55,6 +55,28 @@ class Usuarios extends BaseController {
         }
     }
 
+    private function obtenerHijos($idPadre) {
+        $hijos = $this->socioModel
+            ->select('socios.id as id,codigo_socio,patrocinador,nodopadre,socios.estado as estado,nombre,rango,posicion')
+            ->where('nodopadre', $idPadre)
+            ->join('usuarios', 'usuarios.id=socios.idusuario')
+            ->join('rangos', 'rangos.id=socios.idrango')
+            ->findAll();
+
+        $resultado = [];
+        foreach ($hijos as $hijo) {
+            $resultado[] = [
+                "name" => $hijo->nombre,
+                "rango" => $hijo->rango,
+                "codigo_socio" => $hijo->codigo_socio,
+                "patrocinador" => $hijo->patrocinador,
+                "nodopadre" => $hijo->nodopadre,
+                "children" => $this->obtenerHijos($hijo->id) // recursividad
+            ];
+        }
+        return $resultado;
+    }
+
     /**
      * undocumented function summary
      *
@@ -75,27 +97,6 @@ class Usuarios extends BaseController {
                             ->join('usuarios', 'usuarios.id=socios.idusuario')
                             ->join('rangos', 'rangos.id=socios.idrango')
                             ->find($this->session->id);
-
-            $arbol = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,nodopadre,socios.estado as estado,nombre,rango')
-                                ->where('patrocinador', $this->session->id)
-                                ->orWhere('nodopadre', $this->session->id)
-                                ->join('usuarios', 'usuarios.id=socios.idusuario')
-                                ->join('rangos', 'rangos.id=socios.idrango')
-                                ->findAll();//echo $this->db->getLastQuery();
-            
-            //Inyecto los hijos
-            $children = [];
-
-            foreach ($arbol as $socio) {
-                $children[] = [
-                    "name" => $socio->nombre,
-                    "rango" => $socio->rango,
-                    "codigo_socio" => $socio->codigo_socio,
-                    "patrocinador" => $socio->patrocinador,
-                    "nodopadre" => $socio->nodopadre,
-                    "children" => [] // Aquí puedes agregar nietos si los tienes
-                ];
-            }
             
             //Inyecto los datos al árbol
             $data['treeData'] = [
@@ -103,8 +104,8 @@ class Usuarios extends BaseController {
                 "rango" => $data['micodigo']->rango,
                 "codigo_socio" => $data['micodigo']->codigo_socio,
                 "patrocinador" => $data['micodigo']->patrocinador,
-                "nodopadre" => $socio->nodopadre,
-                "children" => $children
+                "nodopadre" => $data['micodigo']->nodopadre,
+                "children" => $this->obtenerHijos($data['micodigo']->id)
             ];
 
 
@@ -185,6 +186,9 @@ class Usuarios extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
 
+                //Traigo el precio del paquete
+                $paquete = $this->paqueteModel->select('pvp')->findAll();
+
                 //verifico si no existe el usuario
                 $userExist = $this->usuarioModel->select('cedula')->where('cedula', $usuario['cedula'])->findAll();
 
@@ -228,7 +232,7 @@ class Usuarios extends BaseController {
                                 
                             'fecha_compra' => date('Y-m-d'),
                             'cantidad' => 1,
-                            'total' => 135,
+                            'total' => $paquete[0]->pvp,
                             'observacion_pedido' => "COMPRA INICIAL POR INSCRIPCION",
                             'idsocio' => $socio,
                             'idpaquete' => 1,
@@ -410,6 +414,8 @@ class Usuarios extends BaseController {
             $data['miEquipo'] = $this->socioModel->where('patrocinador', $this->session->id)->findAll();
 
             //echo '<pre>'.var_export($data['miEquipo'], true).'</pre>';exit;
+            $data['idpatrocinador'] = $this->session->id;
+            $data['patrocinador'] = $this->session->nombre;
 
             //Traigo a los socios debajo del patrocinador que no tienen posición
             $data['sociosReserva'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,idusuario,nombre,cedula,email,fecha_inscripcion,socios.estado as estado')

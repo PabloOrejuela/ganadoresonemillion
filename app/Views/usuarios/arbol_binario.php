@@ -117,28 +117,28 @@
             .text(d => "COD: "+d.data.codigo_socio).attr("x", 0);
         
         //Patrocinador
-        node.append("text")
-            .attr("x", -25)
-            .attr("dy", 115) // Centrado verticalmente dentro del rectángulo (10 + 80/2)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("fill", "#fff") // Opcional: texto blanco para mejor contraste
-            .style("font-family", "Arial, sans-serif")
-            .style("font-size", "10px")   
-            .style("text-align", "center")  
-            .text(d => "Patrocinador: "+d.data.patrocinador).attr("x", 0);
+        // node.append("text")
+        //     .attr("x", -25)
+        //     .attr("dy", 115) // Centrado verticalmente dentro del rectángulo (10 + 80/2)
+        //     .attr("text-anchor", "middle")
+        //     .attr("dominant-baseline", "middle")
+        //     .attr("fill", "#fff") // Opcional: texto blanco para mejor contraste
+        //     .style("font-family", "Arial, sans-serif")
+        //     .style("font-size", "10px")   
+        //     .style("text-align", "center")  
+        //     .text(d => "Patrocinador: "+d.data.patrocinador).attr("x", 0);
         
         //Nodo padre
-        node.append("text")
-            .attr("x", -25)
-            .attr("dy", 135) // Centrado verticalmente dentro del rectángulo (10 + 80/2)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("fill", "#fff") // Opcional: texto blanco para mejor contraste
-            .style("font-family", "Arial, sans-serif")
-            .style("font-size", "10px")   
-            .style("text-align", "center")  
-            .text(d => "Padre: "+d.data.patrocinador).attr("x", 0);
+        // node.append("text")
+        //     .attr("x", -25)
+        //     .attr("dy", 135) // Centrado verticalmente dentro del rectángulo (10 + 80/2)
+        //     .attr("text-anchor", "middle")
+        //     .attr("dominant-baseline", "middle")
+        //     .attr("fill", "#fff") // Opcional: texto blanco para mejor contraste
+        //     .style("font-family", "Arial, sans-serif")
+        //     .style("font-size", "10px")   
+        //     .style("text-align", "center")  
+        //     .text(d => "Padre: "+d.data.patrocinador).attr("x", 0);
 
         const alertaMensaje = (msg, time, icon) => {
         const toast = Swal.mixin({

@@ -34,6 +34,11 @@
 				<div class="wrapper">
 					<div class="container">
 						<div class="row">
+							<div class="col-md-12" id="video-plan">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/VKc2JjcR73w?si=mTxgcci-oqgfgyyB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+							</div>
+						</div>
+						<div class="row">
 							<section class="col-6 col-12-narrower feature">
 								<div class="image-wrapper first">
 									<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
@@ -136,7 +141,7 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 										</div>
 										<div class="col-6 col-12-mobile">
 											<label for="pais">País</label>
-											<input name="pais" class="form-control" placeholder="País" type="text" id="pais" value="Ecuador" />
+											<input name="pais" class="form-control" placeholder="País" type="text" id="pais" value="Ecuador" readonly />
 										</div>
 										<div class="col-6 col-12-mobile" id="div-provincia-ecuador">
 											<label for="idprovincia">Provincia</label>
@@ -197,7 +202,7 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 												<?= form_hidden('origen', 'web'); ?> 
 												<li><input type="submit" value="Registrar" /></li>
 												<li><input type="reset" value="Limpiar formulario" /></li>
-												<li><input type="button" value="Llenar" onclick="autollenarFormulario()"/></li>
+												<li><input type="button" value="Llenar" onclick="autollenarFormulario()" hidden/></li>
 											</ul>
 										</div>
 									</div>

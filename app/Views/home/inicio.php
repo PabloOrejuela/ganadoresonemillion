@@ -213,7 +213,7 @@
                             <td>'.$socio->rango.'</td>';
 
                           //verifica el estado de un socio
-                          if ($socio->estado_socio == 1 && $socio->estado_inscripcion == 1) {
+                          if ($socio->estado_socio == 1) {
                             echo '<td>ACTIVO</td>';
                           } else {
                             echo '<td>INACTIVO</td>';
@@ -337,12 +337,12 @@
               <div class="loren">
                 <p>Las redes de mercadeo con trading automático pueden ser atractivas por varias razones:
 
-Potencial de ingresos pasivos: El trading automático puede generar ingresos sin requerir intervención manual constante.
-Escalabilidad: Las redes de mercadeo permiten expandir la base de clientes y reclutadores, aumentando el potencial de ganancias.
-Diversificación de ingresos: Combinar trading con redes de mercadeo puede diversificar las fuentes de ingresos.
-Automatización: El trading automático reduce el tiempo y esfuerzo necesarios para tomar decisiones de inversión.</p>
+                  Potencial de ingresos pasivos: El trading automático puede generar ingresos sin requerir intervención manual constante.
+                  Escalabilidad: Las redes de mercadeo permiten expandir la base de clientes y reclutadores, aumentando el potencial de ganancias.
+                  Diversificación de ingresos: Combinar trading con redes de mercadeo puede diversificar las fuentes de ingresos.
+                  Automatización: El trading automático reduce el tiempo y esfuerzo necesarios para tomar decisiones de inversión.</p>
 
-<p>"Nuestra visión es ser una comunidad global de personas que viven con propósito y pasión, libres de las limitaciones financieras y temporales que impiden alcanzar sus sueños. Queremos ser un faro de esperanza y oportunidad para aquellos que buscan mejorar su situación financiera y disfrutar de una vida más equilibrada y plena. En Gigantesonemillon, creemos que todos merecen vivir una vida de libertad y propósito, y nos comprometemos a hacer realidad esta visión para nosotros y para los demás."</p>
+                <p>"Nuestra visión es ser una comunidad global de personas que viven con propósito y pasión, libres de las limitaciones financieras y temporales que impiden alcanzar sus sueños. Queremos ser un faro de esperanza y oportunidad para aquellos que buscan mejorar su situación financiera y disfrutar de una vida más equilibrada y plena. En Gigantesonemillon, creemos que todos merecen vivir una vida de libertad y propósito, y nos comprometemos a hacer realidad esta visión para nosotros y para los demás."</p>
               </div>
             </div>
             <!-- /.card-body -->

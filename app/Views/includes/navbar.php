@@ -19,18 +19,24 @@
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
-          <!--begin::Navbar Search-->
-          <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-              <i class="bi bi-search"></i>
+          <!--begin::Calendario Menu-->
+          <li class="nav-item dropdown px-2">
+            <a class="nav-link" data-bs-toggle="dropdown" href="#">
+              <i class="bi bi-calendar-fill"></i> Ver Calendario
+              <span class="navbar-badge badge text-bg-warning"></span>
             </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+              <img
+                id="calendario"
+                src="<?= site_url(); ?>public/recursos/calendario.jpeg"
+                class="user-image shadow"
+                alt="User Image"
+              />
+            </div>
           </li>
-          <!--end::Navbar Search-->
-          <!--begin::Messages Dropdown Menu-->
-          <!-- Aquí iba el dropdopwn de mensajes, lo quité -->
-          <!--end::Messages Dropdown Menu-->
+          <!--end::Calendario Dropdown Menu-->
           <!--begin::Notifications Dropdown Menu-->
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown px-5">
             <a class="nav-link" data-bs-toggle="dropdown" href="#">
               <i class="bi bi-bell-fill"></i>
               <span class="navbar-badge badge text-bg-warning">15</span>
@@ -57,14 +63,6 @@
             </div>
           </li>
           <!--end::Notifications Dropdown Menu-->
-          <!--begin::Fullscreen Toggle-->
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-lte-toggle="fullscreen">
-              <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
-              <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
-            </a>
-          </li>
-          <!--end::Fullscreen Toggle-->
           <!--begin::User Menu Dropdown-->
           <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">

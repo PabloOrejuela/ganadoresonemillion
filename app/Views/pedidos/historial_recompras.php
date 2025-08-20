@@ -28,7 +28,7 @@
                                 <td>'.$num.'</td>
                                 <td>'.$pedido->fecha_compra.'</td>
                                 <td>'.$pedido->descripcion.'</td>
-                                <td>'.$pedido->paquete.' | '.$pedido->litros.' litros - $'.$pedido->pvp.'</td>
+                                <td>'.$pedido->paquete.' | '.$pedido->pvp.'</td>
                                 <td>'.$pedido->cantidad.'</td>
                                 <td>'.$pedido->total.'</td>';
                                 if ($pedido->estado == 1) {

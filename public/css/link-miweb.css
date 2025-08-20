@@ -50,3 +50,7 @@ h2, .card-header, .title-center{
 #div-provincia-otro-pais, #div-ciudad-otro-pais{
     display: none;
 }
+
+#video-plan{
+    text-align: center;
+}

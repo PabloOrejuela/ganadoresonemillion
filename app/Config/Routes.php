@@ -57,3 +57,6 @@ $routes->get('registrarPagoRecompra', 'Administracion::registrarPagoRecompra');
 //SOCIOS
 $routes->get('tablero-lideres', 'Usuarios::tablerolideres');
 
+//Recursos
+$routes->get('recursos', 'Recursos::index');
+
