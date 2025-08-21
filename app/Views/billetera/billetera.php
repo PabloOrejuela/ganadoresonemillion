@@ -142,7 +142,8 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-              <div class="col-md-12">
+              <div class="col-md-12 mt-2">
+                <h5>Opciones: </h5>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="porcentajeAhorro" id="radioAhorrar0" value="0" checked>
                   <label class="form-check-label" for="radioAhorrar">

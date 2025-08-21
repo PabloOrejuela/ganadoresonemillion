@@ -37,15 +37,17 @@ class Usuarios extends BaseController {
             $data['session'] = $this->session;
             $data['sistema'] = $this->sistemaModel->findAll();
             $data['micodigo'] = $this->socioModel->find($this->session->id);
-            $data['mi_equipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,fecha_inscripcion,idusuario,
-                                idrango,socios.estado as estado_socio,nombre,user,usuarios.cedula as cedula,posicion,
-                                telefono,email,idrol,rango,nodopadre,socios.id as idsocio')
-                                ->where('patrocinador', $data['micodigo']->id)
-                                ->join('usuarios', 'usuarios.id=socios.idusuario')
-                                ->join('rangos', 'rangos.id=socios.idrango')
-                                ->findAll();//echo $this->db->getLastQuery();
+            $data['mi_equipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,fecha_inscripcion,idusuario,idrango,socios.estado as estado_socio,nombre,
+                    user,usuarios.cedula as cedula,posicion,telefono,email,idrol,rango,nodopadre,socios.id as idsocio')
+                    ->where('patrocinador', $data['micodigo']->id)
+                    ->join('usuarios', 'usuarios.id=socios.idusuario','left')
+                    ->join('rangos', 'rangos.id=socios.idrango','left')
+                    ->findAll();
+            //echo $this->db->getLastQuery();
 
-            $data['title'] = 'Lista Binaria ACTUALMENTE EN PROCESO DE DESARROLLO';
+            //echo '<pre>'.var_export($data['mi_equipo'], true).'</pre>';exit;
+
+            $data['title'] = 'Lista Binaria';
             $data['subtitle'] = 'Lista de socios en la organización con sus datos y ubicaciones en el binario';
             $data['main_content'] = 'usuarios/lista_binaria';
 
@@ -59,8 +61,8 @@ class Usuarios extends BaseController {
         $hijos = $this->socioModel
             ->select('socios.id as id,codigo_socio,patrocinador,nodopadre,socios.estado as estado,nombre,rango,posicion')
             ->where('nodopadre', $idPadre)
-            ->join('usuarios', 'usuarios.id=socios.idusuario')
-            ->join('rangos', 'rangos.id=socios.idrango')
+            ->join('usuarios', 'usuarios.id=socios.idusuario','left')
+            ->join('rangos', 'rangos.id=socios.idrango', 'left')
             ->findAll();
 
         $resultado = [];
@@ -94,20 +96,29 @@ class Usuarios extends BaseController {
             $data['session'] = $this->session;
             $data['sistema'] = $this->sistemaModel->findAll();
             $data['micodigo'] = $this->socioModel
-                            ->join('usuarios', 'usuarios.id=socios.idusuario')
-                            ->join('rangos', 'rangos.id=socios.idrango')
+                            ->select('nombre,rango,codigo_socio,patrocinador,nodopadre,posicion,socios.id as id')
+                            ->join('usuarios', 'usuarios.id=socios.idusuario','left')
+                            ->join('rangos', 'rangos.id=socios.idrango','left')
                             ->find($this->session->id);
-            
-            //Inyecto los datos al árbol
+
+            // Todos los socios
+            $data['todosLosSocios'] = $this->socioModel
+                ->select('nombre,rango,codigo_socio,patrocinador,nodopadre,posicion,socios.id as id')
+                ->join('usuarios', 'usuarios.id=socios.idusuario','left')
+                ->join('rangos', 'rangos.id=socios.idrango','left')
+                ->findAll();
+
+            // Nodo raíz del árbol
             $data['treeData'] = [
+                "id" => $data['micodigo']->id,
                 "name" => $data['micodigo']->nombre,
                 "rango" => $data['micodigo']->rango,
                 "codigo_socio" => $data['micodigo']->codigo_socio,
                 "patrocinador" => $data['micodigo']->patrocinador,
-                "nodopadre" => $data['micodigo']->nodopadre,
-                "children" => $this->obtenerHijos($data['micodigo']->id)
+                "nodopadre" => $data['micodigo']->nodopadre
             ];
 
+            //echo '<pre>'.var_export($data['todosLosSocios'], true).'</pre>';exit;
 
             $data['title'] = 'Mi Arbol Binario';
             $data['subtitle'] = 'Mi árbol binario';
