@@ -30,6 +30,7 @@ $routes->post('new-order', 'Pedidos::insertNuevoPedido');
 $routes->get('get-paquete', 'Pedidos::getPaquete');
 $routes->get('lista-pedidos', 'Pedidos::historialPedidos'); //Cambiar por lista de pedidos
 $routes->get('historial-pedidos', 'Pedidos::historialPedidos');
+$routes->get('get-saldo-billetera', 'Pedidos::getSaldoBilletera');
 
 //Mi billetera
 $routes->get('my-wallet', 'BilleteraDigital::index');

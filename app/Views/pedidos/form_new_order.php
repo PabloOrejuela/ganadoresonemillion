@@ -51,7 +51,7 @@
                         <?php
                             if ($paquetes) {
                                 foreach ($paquetes as $key => $paquete) {
-                                    echo '<option value="'.$paquete->id.'" selected>'.$paquete->paquete.' | '.$paquete->litros.' litros - $'.$paquete->pvp.'</option>';
+                                    echo '<option value="'.$paquete->id.'" selected>'.$paquete->paquete.' | $'.$paquete->pvp.'</option>';
                                 }
                             } else {
                                 # code...
@@ -72,6 +72,7 @@
                         name="cantidad"
                         value="1"
                         required
+                        readonly
                     />
                     <div class="valid-feedback">Correcto!</div>
                     <div class="invalid-feedback">Por favor debe ingresar su nombre .</div>
@@ -85,12 +86,47 @@
                         class="form-control"
                         id="total"
                         name="total"
-                        value="135"
+                        value="<?= $paquetes[0]->pvp ?>"
                         readonly
                         required
                     />
                     <div class="valid-feedback">Correcto!</div>
                     <div class="invalid-feedback">Por favor debe ingresar su nombre .</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-6">
+                    <label for="metodo-pago" class="form-label">Método de pago:</label>
+                    <select class="form-select" id="metodo-pago" name="metodoPago" required>
+                        <option selected disabled value="">--Escoja un método--</option>
+                        <?php
+                            if ($metodosPago) {
+                                foreach ($metodosPago as $key => $metodo) {
+                                    if ($key == 1) {
+                                        echo '<option value="'.$key.'"selected>'.$metodo.'</option>';
+                                    }else{
+                                        echo '<option value="'.$key.'">'.$metodo.'</option>';
+                                    }
+                                }
+                            } else {
+                                # code...
+                            }
+                            
+                        ?>
+                    </select>
+                    <div class="invalid-feedback">Por favor seleccione un método de pago.</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-2" id="div-saldo-billetera">
+                <label for="saldo-billetera" class="form-label">Saldo Billetera Digital</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="saldo-billetera"
+                        name="saldoBilletera"
+                        value=""
+                    />
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->

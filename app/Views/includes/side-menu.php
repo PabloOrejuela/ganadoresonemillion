@@ -64,7 +64,7 @@
                 </a>
             </ul>
           </li>
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon bi bi-box-seam-fill"></i>
               <p>
@@ -84,15 +84,15 @@
                   <i class="nav-icon bi bi-circle"></i>
                   <p>Historial del pedidos</p>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> 
+              <!--<li class="nav-item">
                 <a href="historial-pedidos" class="nav-link">
                   <i class="nav-icon bi bi-circle"></i>
                   <p>Lista de pedidos mensual</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
-          </li> -->
+          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon bi bi-diagram-2"></i>

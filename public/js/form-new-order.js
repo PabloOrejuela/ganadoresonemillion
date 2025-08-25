@@ -1,34 +1,33 @@
-const txtCantidad = document.getElementById("cantidad")
-const txtTotal = document.getElementById("total")
-const selectPaquetes = document.getElementById("idpaquete")
+const selectMetodoPago = document.getElementById("metodo-pago")
+let txtBilletera = document.getElementById("saldo-billetera")
 
 
-txtCantidad.addEventListener('input', function(e) {
+selectMetodoPago.addEventListener('change', function(e) {
     //e.stopPropagation()
-    let idpaquete = selectPaquetes.selectedIndex
-    let cantidad = txtCantidad.value
-    let total = txtTotal.value
-    console.log(idpaquete);
-    $.ajax({
-        method:"GET",
-        dataType:"json",
-        url: "get-paquete",
-        data: {
-            idpaquete: idpaquete
-        },
-        beforeSend: function (f) {
-            
-        },
-        success: function(result){
-            
-            let pvp = result.infoPaquete.pvp
-            total = cantidad*pvp
-            console.log(total);
-            alertaMensaje("Se ha cambiado la cantidad", 1000, 'success')
-            txtTotal.value = total
-        }
-    });
-    
+
+    if (selectMetodoPago.selectedIndex === 2) {
+        $.ajax({
+            method:"GET",
+            dataType:"json",
+            url: "get-saldo-billetera",
+            data: {},
+            beforeSend: function (f) {
+                
+            },
+            success: function(result){
+                
+                let saldo = result.saldo
+                txtBilletera.style.visibility = "visible"
+                txtBilletera.value = saldo
+
+                alertaMensaje("Pago con saldo disponible de la billetera digital", 2000, 'success')
+            }
+        });
+    }else{
+        txtBilletera.style.visibility = "hidden"
+        txtBilletera.value = "0"
+        alertaMensaje("Efectivo / transferencia / Depósito (Red bancaria)", 2000, 'success')
+    }
 });
 
 const alertaMensaje = (msg, time, icon) => {

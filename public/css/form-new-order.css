@@ -5,3 +5,7 @@ label{
 #total{
     text-align: right;
 }
+
+#div-saldo-billetera{
+    visibility: hidden;
+}

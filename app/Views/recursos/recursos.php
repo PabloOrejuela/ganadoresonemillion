@@ -10,7 +10,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-auto" id="div-logo">
-                    <img src="<?= base_url(); ?>public/images/logo-gom.png" alt="logo" class="img-size-100 mr-3 img-circle" id="logo-gom">
+                    <img src="<?= base_url(); ?>public/images/logo-gom-negro.png" alt="logo" class="img-size-100 mr-3 img-circle" id="logo-gom">
                     <h3>Aquí pueden encontrar algunos recursos descargables</h3>
                 </div>
             </div>

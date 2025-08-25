@@ -13,6 +13,11 @@ class Pedidos extends BaseController {
         9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
     ];
 
+    private $metodosPago = [
+        1 => 'Efectivo / transferencia / Depósito (Red bancaria)',
+        2 => 'Saldo de mi billetera digital'
+    ];
+
     private $mes;
     private $anio;
 
@@ -46,8 +51,10 @@ class Pedidos extends BaseController {
             ->join('rangos', 'rangos.id=socios.idrango')->findAll();
         
         $data['tiene_recompra'] = $this->pedidoModel->_verificaRecompra($data['datosSocio'][0]->idsocio);
-
         $data['mes_actual'] = $this->meses[date('n')];
+        $data['metodosPago'] = $this->metodosPago;
+
+        //echo '<pre>'.var_export($data['paquetes'][0]->pvp, true).'</pre>';exit;
 
         $data['title'] = 'Pedidos';
         $data['subtitle']='Hacer un pedido de producto';
@@ -59,6 +66,19 @@ class Pedidos extends BaseController {
     public function getPaquete(){
         $idpaquete = $this->request->getPostGet('idpaquete');
         $res['infoPaquete'] = $this->paqueteModel->find($idpaquete);
+
+        echo json_encode($res);
+    }
+
+    public function getSaldoBilletera(){
+        $data['billetera'] = $this->billeteraDigitalModel->where('idsocio', $this->session->id)->findAll();
+        $total = 0;
+
+        foreach ($data['billetera'] as $key => $mov) {
+            $total += $mov->cantidad;
+        }
+            
+        $res['saldo'] = $total;
 
         echo json_encode($res);
     }
@@ -79,11 +99,12 @@ class Pedidos extends BaseController {
                 'idsocio' => $this->session->id,
                 'observacion_pedido' => strtoupper($this->request->getPostGet('observacion_pedido')),
                 'fecha_compra' => date('Y-m-d h:m:s'),
+                'metodo_pago' => $this->request->getPostGet('metodoPago'),
+                'saldo_billetera_digital' => $this->request->getPostGet('saldoBilletera'),
                 'estado' => 0
             ];
 
             $this->validation->setRuleGroup('insertPedido');
-        
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -91,6 +112,8 @@ class Pedidos extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
+
+                echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 //Inserto el nuevo pedido
                 $res = $this->pedidoModel->insert($pedido);
 

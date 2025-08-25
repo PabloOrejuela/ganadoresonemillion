@@ -19,7 +19,7 @@
 						<header>
 							<div class="row align-items-center">
 								<div class="col-auto">
-									<img src="<?= base_url(); ?>public/images/logo-gom.png" alt="logo" class="img-size-100 mr-3 img-circle" id="logo-gom">
+									<img src="<?= base_url(); ?>public/images/logo-gom-blanco.png" alt="logo" class="img-size-100 mr-3 img-circle" id="logo-gom">
 								</div>
 								<div class="col">
 									<h2 id="h2-text-left" class="mb-0">¡Oportunidad Única en Network Marketing! con Trading Automático</h2>
@@ -44,7 +44,7 @@
 									<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 								</div>
 								<header>
-									<img src="<?= base_url(); ?>public/images/logo-gom.png" alt="logo" class="img-size-50 mr-3 img-circle" id="logo-gom">
+									<img src="<?= base_url(); ?>public/images/logo-gom-negro.png" alt="logo" class="img-size-50 mr-3 img-circle" id="logo-gom">
 								</header>
 								<p>"Nuestra visión es ser una comunidad global de personas que viven con propósito y pasión, libres de las limitaciones financieras y temporales que impiden alcanzar sus sueños. Queremos ser un faro de esperanza y oportunidad para aquellos que buscan mejorar su situación financiera y disfrutar de una vida más equilibrada y plena. En Gigantesonemillon, creemos que todos merecen vivir una vida de libertad y propósito, y nos comprometemos a hacer realidad esta visión para nosotros y para los demás."</p>
 								<h3>Nuestros valores</h3><p>Unidad: Creemos en la importancia de la unidad y la colaboración para alcanzar nuestros objetivos y hacer un impacto positivo en la vida de las personas.

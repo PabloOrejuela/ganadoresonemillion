@@ -2,6 +2,8 @@
 
 <h2>Corrección de errores</h2>
 <ul>
+    <li>Se comentó el link a la lista de pedidos mensual hasta decidir si se queda o no</li>
+    <li>Se ha activado el menú Pedidos</li>
     <li>Se ha revisado la funcionalidad del administrador de socios</li>
     <li>Se ha activado el menú administrador</li>
     <li>Se hizo algunas correcciones del árbol binario y la lista binaria</li>

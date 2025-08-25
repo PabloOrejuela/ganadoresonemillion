@@ -9,7 +9,7 @@
                 <h3 id="title-center">Gana con <?= NOMBRE_EMPRESA; ?>!</h3>
             </div>
             <div class="div-center">
-                <img src="<?= base_url(); ?>public/images/logo-gom.png" alt="logo" class="img-size-100 mr-3 img-circle mt-4 mb-4" id="logo-gom">
+                <img src="<?= base_url(); ?>public/images/logo-gom-negro.png" alt="logo" class="img-size-100 mr-3 img-circle mt-4 mb-4" id="logo-gom">
             </div>
             <!-- /.card-header -->
             <div class="card-body">
