@@ -10,7 +10,7 @@
           data-accordion="false"
         >
           <?php
-            if ($session->idrol == 1 && $session->idrol == NULL) {
+            if ($session->idrol == 1) {
               echo '
                 <li class="nav-item">
                   <a href="#" class="nav-link">

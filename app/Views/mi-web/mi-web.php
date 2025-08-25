@@ -202,7 +202,7 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 												<?= form_hidden('origen', 'web'); ?> 
 												<li><input type="submit" value="Registrar" /></li>
 												<li><input type="reset" value="Limpiar formulario" /></li>
-												<li><input type="button" value="Llenar" onclick="autollenarFormulario()" hidden/></li>
+												<li><input type="button" value="Llenar" onclick="autollenarFormulario()"/></li>
 											</ul>
 										</div>
 									</div>

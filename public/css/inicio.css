@@ -49,3 +49,11 @@
     font-weight: bold;
     background-color: #9df0c7;
 }
+
+#img-desafio{
+    width: 320px;
+}
+
+.card-equipo{
+    padding: 10px;
+}

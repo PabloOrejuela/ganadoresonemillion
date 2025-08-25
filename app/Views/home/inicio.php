@@ -134,47 +134,13 @@
           <!-- Mis pedidos -->
           <div class="card direct-chat direct-chat-primary mb-4">
             <div class="card-header">
-              <h3 class="card-title">Lista de Pedidos de la semana</h3>
+              <h3 class="card-title">Desafío:</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
               <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th style="width: 10px">No.</th>
-                    <th>Fecha de compra</th>
-                    <th>Paquete</th>
-                    <th>Total</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
                 <tbody>
-                  <?php
-                    $num = 1;
-                    if ($pedidos) {
-                      
-                      foreach ($pedidos as $key => $pedido) {
-                        echo '<tr class="align-middle">
-                            <td>'.$num.'</td>
-                            <td>'.$pedido->fecha_compra.'</td>
-                            <td>'.$pedido->paquete.' | '.$pedido->pvp.'</td>
-                            <td>'.$pedido->total.'</td>';
-                            if ($pedido->estado == 1) {
-                              echo '<td>Pagado</td>';
-                            } else {
-                              echo '<td>Por pagar</td>';
-                            }
-                            
-                        echo '</tr>';
-                          $num++;
-                      }
-                    }else{
-                      echo '<tr class="align-middle">
-                            <td>1.</td>
-                            <td colspan="5">SIN DATOS QUE MOSTRAR</td>
-                          </tr>';
-                    }
-                  ?>
+                  <tr><td><img src="<?= site_url(); ?>public/images/desafio-01.jpeg" id="img-desafio" /></td><td><img src="<?= site_url(); ?>public/images/desafio-02.jpeg" id="img-desafio"/></td></tr>
                 </tbody>
               </table>
             </div>
@@ -183,13 +149,13 @@
           <!-- /.Mis pedidos-->
           <!-- /.card -->
           <!-- Mi equipo -->
-          <div class="card direct-chat direct-chat-primary mb-4">
+          <div class="card direct-chat direct-chat-primary mb-4 card-equipo">
             <div class="card-header">
               <h3 class="card-title">Mi Equipo</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table class="table table-striped">
+              <table class="table table-striped" id="datatable-equipo">
                 <thead>
                   <tr>
                     <th style="width: 10px">No.</th>
@@ -197,7 +163,6 @@
                     <th>Nombre</th>
                     <th>Rango</th>
                     <th>Estado</th>
-                    <th>Progreso</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -207,27 +172,21 @@
                       
                       foreach ($mi_equipo as $key => $socio) {
                         echo '<tr class="align-middle">
-                            <td>'.$num.'</td>
-                            <td>'.$socio->codigo_socio.'</td>
-                            <td>'.$socio->nombre.'</td>
-                            <td>'.$socio->rango.'</td>';
+                                <td>'.$num.'</td>
+                                <td>'.$socio->codigo_socio.'</td>
+                                <td>'.$socio->nombre.'</td>
+                                <td>'.$socio->rango.'</td>';
 
-                          //verifica el estado de un socio
-                          if ($socio->estado_socio == 1) {
-                            echo '<td>ACTIVO</td>';
-                          } else {
-                            echo '<td>INACTIVO</td>';
-                          }
-                            
-                        echo '<td><span class="badge text-bg-danger">0%</span></td>
-                          </tr>';
+                                //verifica el estado de un socio
+                                if ($socio->estado_socio == 1) {
+                                  echo '<td>ACTIVO</td>';
+                                } else {
+                                  echo '<td>INACTIVO</td>';
+                                }
+                        echo '</tr>';
                           $num++;
                       }
                     }else{
-                      echo '<tr class="align-middle">
-                            <td>1.</td>
-                            <td colspan="5">SIN DATOS QUE MOSTRAR</td>
-                          </tr>';
                     }
                   ?>
                 </tbody>
@@ -371,3 +330,5 @@
     <!--end::Container-->
   </div>
   <!--end::App Content-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/inicio.js"></script>
