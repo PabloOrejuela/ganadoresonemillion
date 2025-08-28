@@ -2,6 +2,7 @@
 
 <h2>Corrección de errores</h2>
 <ul>
+    <li>Correcion de la lista de socios en administración</li>
     <li>Se comentó el link a la lista de pedidos mensual hasta decidir si se queda o no</li>
     <li>Se ha activado el menú Pedidos</li>
     <li>Se ha revisado la funcionalidad del administrador de socios</li>

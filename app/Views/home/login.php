@@ -3,7 +3,7 @@
   <div class="login-box">
     <div class="login-logo">
       <a href="#">
-        <img src="<?= base_url(); ?>public/images/logo-gom.png" alt="logo" class="img-size-50 mr-3 img-circle" id="logo-gom">
+        <img src="<?= base_url(); ?>public/images/logo-gom-negro.png" alt="logo" class="img-size-50 mr-3 img-circle" id="logo-gom">
       </a>
     </div>
     <!-- /.login-logo -->

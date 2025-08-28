@@ -193,6 +193,7 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 													type="checkbox" 
 													id="invalidCheck" 
 													value="1"
+													checked
 												/>
 												<label class="form-check-label" for="invalidCheck">Estoy de acuerdo con los téminos y condiciones del sitio</label>
 											</div>
@@ -211,14 +212,12 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 							<section class="col-6 col-12-narrower">
 								<div class="row gtr-0">
 									<ul class="divided icons col-6 col-12-mobile">
-										<li class="icon brands fa-twitter"><a href="#"><span class="extra">twitter</span></a></li>
-										<li class="icon brands fa-facebook-f"><a href="#"><span class="extra">facebook</span></a></li>
-										<li class="icon brands fa-tiktok"><a href="#"><span class="extra">tiktok</span></a></li>
+										<li class="icon brands fa-facebook-f"><a href="https://www.facebook.com/share/1D3CJLWzdC/?mibextid=wwXIfr"><span class="extra">facebook</span></a></li>
+										<li class="icon brands fa-tiktok"><a href="www.tiktok.com/@gigantesonemillon"><span class="extra">tiktok</span></a></li>
 									</ul>
 									<ul class="divided icons col-6 col-12-mobile">
-										<li class="icon brands fa-instagram"><a href="#"><span class="extra">instagram</span></a></li>
+										<li class="icon brands fa-instagram"><a href="https://www.instagram.com/frank_nicolay_lopez_guevara_?igsh=MThzNzI5enNnZGNkbg%3D%3D&utm_source=qr"><span class="extra">instagram</span></a></li>
 										<li class="icon brands fa-youtube"><a href="#"><span class="extra">youtube</span></a></li>
-										<li class="icon brands fa-pinterest"><a href="#"><span class="extra">pinterest</span></a></li>
 									</ul>
 								</div>
 							</section>

@@ -137,7 +137,7 @@
                         class="form-control"
                         id="descripcion"
                         name="descripcion"
-                        value="<?= $tiene_recompra == null ? 'RECOMPRA DEL MES DE '.strtoupper($mes_actual) : 'COMPRA DE PRODUCTO' ?>"
+                        value="<?= $tiene_recompra == null ? 'PAGO MEMBRESÍA DEL MES '.strtoupper($mes_actual) : 'PAGO MEMBRESÍA' ?>"
                         readonly
                         required
                     />
@@ -163,7 +163,13 @@
         <!--end::Body-->
         <!--begin::Footer-->
         <div class="card-footer">
-            <button class="btn btn-info" type="submit">Enviar</button>
+            <?php
+                if ($tiene_recompra) {
+                    echo '<div id="mensaje">Ya tiene recompra de este mes, no puede pagar dos veces su membresía en el mismo mes</div>';
+                }else{
+                    echo '<button class="btn btn-info" type="submit">Enviar</button>';
+                }
+            ?>
         </div>
         <!--end::Footer-->
         </form>

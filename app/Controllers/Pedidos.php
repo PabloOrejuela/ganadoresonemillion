@@ -51,13 +51,14 @@ class Pedidos extends BaseController {
             ->join('rangos', 'rangos.id=socios.idrango')->findAll();
         
         $data['tiene_recompra'] = $this->pedidoModel->_verificaRecompra($data['datosSocio'][0]->idsocio);
+
         $data['mes_actual'] = $this->meses[date('n')];
         $data['metodosPago'] = $this->metodosPago;
 
         //echo '<pre>'.var_export($data['paquetes'][0]->pvp, true).'</pre>';exit;
 
-        $data['title'] = 'Pedidos';
-        $data['subtitle']='Hacer un pedido de producto';
+        $data['title'] = 'REGISTRO DE PAGO DE MEMBRESÍA';
+        $data['subtitle']='Pago de membresía mes de '.$this->meses[date('n')];
         $data['main_content'] = 'pedidos/form_new_order';
         return view('dashboard/index', $data);
         
@@ -113,7 +114,7 @@ class Pedidos extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
 
-                echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                
                 //Inserto el nuevo pedido
                 $res = $this->pedidoModel->insert($pedido);
 

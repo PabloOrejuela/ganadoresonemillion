@@ -9,3 +9,9 @@ label{
 #div-saldo-billetera{
     visibility: hidden;
 }
+
+#mensaje{
+    color: #1b9209;
+    font-weight: bold;
+    font-size: 1.2em;
+}
