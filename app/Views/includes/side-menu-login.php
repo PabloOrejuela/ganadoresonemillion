@@ -1,18 +1,18 @@
-
-        <!--begin::Sidebar Wrapper-->
-        <div class="sidebar-wrapper">
-          <nav class="mt-2">
-            <!--begin::Sidebar Menu-->
-            <ul
-              class="nav sidebar-menu flex-column"
-              data-lte-toggle="treeview"
-              role="menu"
-              data-accordion="false"
-            >
-            </ul>
-            <!--end::Sidebar Menu-->
-          </nav>
-        </div>
-        <!--end::Sidebar Wrapper-->
-      </aside>
-      <!--end::Sidebar-->
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/side-menu-login.css">
+    <!--begin::Sidebar Wrapper-->
+    <div class="sidebar-wrapper">
+      <nav class="mt-2">
+        <!--begin::Sidebar Menu-->
+        <ul
+          class="nav sidebar-menu flex-column"
+          data-lte-toggle="treeview"
+          role="menu"
+          data-accordion="false"
+        >
+        </ul>
+        <!--end::Sidebar Menu-->
+      </nav>
+    </div>
+    <!--end::Sidebar Wrapper-->
+  </aside>
+  <!--end::Sidebar-->

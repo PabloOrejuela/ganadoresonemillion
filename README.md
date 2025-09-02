@@ -1,7 +1,12 @@
 <h1>Cambios</h1>
+<ul>
+<li>Se implementó la funcionalidad de la penalización cuando ya han pasado 15 días y no ha registrado mínimo a 2 patrocinados</li>
+</ul>
 
 <h2>Corrección de errores</h2>
 <ul>
+    <li>Se corrigió el reporte de estado de socios pues no se mostraba, daba un error</li>
+    <li>Se deshabilitó el campo de passwoprd en la edición del perfil</li>
     <li>Correcion de la lista de socios en administración</li>
     <li>Se comentó el link a la lista de pedidos mensual hasta decidir si se queda o no</li>
     <li>Se ha activado el menú Pedidos</li>

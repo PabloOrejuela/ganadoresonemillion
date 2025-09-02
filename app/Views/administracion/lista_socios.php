@@ -4,12 +4,10 @@
     <!--begin::Header-->
     <div class="card-header"><div class="card-title"><?= $title; ?></div></div>
     <!--end::Header-->
-    <!--begin::Form-->
-    <form class="needs-validation" action="<?= site_url().'new-member-insert';?>" method="post" novalidate>
     <!--begin::Body-->
     <div class="card-body">
         <!--begin::Row-->
-        <div class="row g-3">
+        <div class="row g-3 col-md-9">
             <table id="datatablesSimple" class="table table-bordered table-striped mt-1">
                 <thead>
                     <th id="td-left">Id</th>
@@ -36,7 +34,6 @@
                                 $year = date('Y');
                                 $abonos = 0;
                                 $saldo = 0;
-                                
                                 
                                 $num_dias = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
@@ -116,13 +113,6 @@
         <!--end::Row-->
     </div>
     <!--end::Body-->
-    <!--begin::Footer-->
-    <div class="card-footer">
-        <button class="btn btn-info" type="submit">Enviar</button>
-    </div>
-    <!--end::Footer-->
-    </form>
-    <!--end::Form-->
 
     <!-- Registra pago Modal-->
     <div class="modal fade" id="registraPagoModal" tabindex="-1" aria-labelledby="registraPagoModal" aria-hidden="true">

@@ -16,10 +16,6 @@ class Usuarios extends BaseController {
         return $data;
     }
 
-    public function index(){
-        //
-    }
-
     /**
      * undocumented function summary
      *
@@ -57,28 +53,6 @@ class Usuarios extends BaseController {
         }
     }
 
-    private function obtenerHijos($idPadre) {
-        $hijos = $this->socioModel
-            ->select('socios.id as id,codigo_socio,patrocinador,nodopadre,socios.estado as estado,nombre,rango,posicion')
-            ->where('nodopadre', $idPadre)
-            ->join('usuarios', 'usuarios.id=socios.idusuario','left')
-            ->join('rangos', 'rangos.id=socios.idrango', 'left')
-            ->findAll();
-
-        $resultado = [];
-        foreach ($hijos as $hijo) {
-            $resultado[] = [
-                "name" => $hijo->nombre,
-                "rango" => $hijo->rango,
-                "codigo_socio" => $hijo->codigo_socio,
-                "patrocinador" => $hijo->patrocinador,
-                "nodopadre" => $hijo->nodopadre,
-                "children" => $this->obtenerHijos($hijo->id) // recursividad
-            ];
-        }
-        return $resultado;
-    }
-
     /**
      * undocumented function summary
      *
@@ -96,14 +70,14 @@ class Usuarios extends BaseController {
             $data['session'] = $this->session;
             $data['sistema'] = $this->sistemaModel->findAll();
             $data['micodigo'] = $this->socioModel
-                            ->select('nombre,rango,codigo_socio,patrocinador,nodopadre,posicion,socios.id as id')
+                            ->select('nombre as name,rango,codigo_socio,patrocinador,nodopadre,posicion,socios.id as id,socios.estado as estado')
                             ->join('usuarios', 'usuarios.id=socios.idusuario','left')
                             ->join('rangos', 'rangos.id=socios.idrango','left')
                             ->find($this->session->id);
 
-            // Todos los socios
+            //Traigo todos los socios
             $data['todosLosSocios'] = $this->socioModel
-                ->select('nombre,rango,codigo_socio,patrocinador,nodopadre,posicion,socios.id as id')
+                ->select('nombre as name,rango,codigo_socio,patrocinador,nodopadre,posicion,socios.id as id,socios.estado as estado')
                 ->join('usuarios', 'usuarios.id=socios.idusuario','left')
                 ->join('rangos', 'rangos.id=socios.idrango','left')
                 ->findAll();
@@ -111,14 +85,16 @@ class Usuarios extends BaseController {
             // Nodo raíz del árbol
             $data['treeData'] = [
                 "id" => $data['micodigo']->id,
-                "name" => $data['micodigo']->nombre,
+                "name" => $data['micodigo']->name,
                 "rango" => $data['micodigo']->rango,
+                "estado" => $data['micodigo']->estado,
                 "codigo_socio" => $data['micodigo']->codigo_socio,
                 "patrocinador" => $data['micodigo']->patrocinador,
-                "nodopadre" => $data['micodigo']->nodopadre
+                "nodopadre" => $data['micodigo']->nodopadre,
+                "children" => []
             ];
 
-            //echo '<pre>'.var_export($data['todosLosSocios'], true).'</pre>';exit;
+        //echo '<pre>'.var_export($data['todosLosSocios'], true).'</pre>';exit;
 
             $data['title'] = 'Mi Arbol Binario';
             $data['subtitle'] = 'Mi árbol binario';
@@ -128,6 +104,28 @@ class Usuarios extends BaseController {
         }else{
             return redirect()->to('logout');
         }
+    }
+
+    private function obtenerHijos($idPadre) {
+        $hijos = $this->socioModel
+            ->select('socios.id as id,codigo_socio,patrocinador,nodopadre,socios.estado as estado,nombre,rango,posicion')
+            ->where('nodopadre', $idPadre)
+            ->join('usuarios', 'usuarios.id=socios.idusuario','left')
+            ->join('rangos', 'rangos.id=socios.idrango', 'left')
+            ->findAll();
+
+        $resultado = [];
+        foreach ($hijos as $hijo) {
+            $resultado[] = [
+                "name" => $hijo->nombre,
+                "rango" => $hijo->rango,
+                "codigo_socio" => $hijo->codigo_socio,
+                "patrocinador" => $hijo->patrocinador,
+                "nodopadre" => $hijo->nodopadre,
+                "children" => $this->obtenerHijos($hijo->id) // Aplico recursividad
+            ];
+        }
+        return $resultado;
     }
 
     /**
@@ -197,6 +195,9 @@ class Usuarios extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
 
+                //Traigo los datos del socio
+                $data['mis_datos'] = $this->socioModel->where('idusuario', $this->session->id)->first();
+
                 //Traigo el precio del paquete
                 $paquete = $this->paqueteModel->select('pvp')->findAll();
 
@@ -232,7 +233,8 @@ class Usuarios extends BaseController {
                         $bir = [
                             'idsocio' => $this->session->id,
                             'socio_nuevo' => $socio,
-                            'cantidad' => 50,
+                            //Le aplico la penalización en caso de que la tenga
+                            'cantidad' => $data['mis_datos']->penalizacion == 0 ? 50 : 25,
                             'concepto' => "BIR POR INSCRIPCION DE NUEVO SOCIO",
                             'fecha' => date('Y-m-d h:m:s'),
                             'estado' => 0,
@@ -333,11 +335,15 @@ class Usuarios extends BaseController {
         if ($data['logged'] == 1) {
 
             $id = $this->session->id;
+            $pass = filter_var($this->request->getPostGet('password'), FILTER_SANITIZE_STRING);
+
+            // generamos el hash a partir de la contraseña enviada desde el formulario
+            $pass_hashed = password_hash($pass, PASSWORD_BCRYPT);
 
             $usuario = [
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'user' => strtoupper($this->request->getPostGet('user')),
-                'password' => strtoupper($this->request->getPostGet('password')),
+                //'password' => $pass_hashed,
                 'telefono' => strtoupper($this->request->getPostGet('telefono')),
                 'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'cedula' => strtoupper($this->request->getPostGet('cedula')),

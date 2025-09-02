@@ -202,6 +202,29 @@ class Home extends BaseController {
         
     }
 
+    public function verificaPenalizacionBir($mi_equipo, $mis_datos){
+        $data = [];
+        $fecha_actual = new \DateTime(date('Y-m-d'));
+        $fecha_ins = new \DateTime($mis_datos->fecha_inscripcion);
+        $diferencia = $fecha_actual->diff($fecha_ins);
+
+        //Si ya han pasado mas de 15 días
+        if ($diferencia->days >= 15) {
+            //Como ya han pasado mas de 15 días se le penaliza si es que no tiene 2 o mas patrocimnados
+            if (count($mi_equipo) < 2) {
+                $data = [
+                    'penalizacion' => '1'
+                ];
+                $this->socioModel->update($this->session->id, $data);
+            }
+        }
+
+        /*
+        * En caso de que no hayan pasado aún 15 días no sucede nada y si ya han pasado pero tiene
+        * al menos 2 patrocinados tampoco pasa nada
+        */
+    }
+
     public function inicio() {
         
         $data = $this->acl();
@@ -211,6 +234,9 @@ class Home extends BaseController {
             $data['session'] = $this->session;
             $data['sistema'] = $this->sistemaModel->findAll();
             $data['users'] = $this->usuarioModel->findAll();
+
+            //Obtengo mis datos
+            $data['mis_datos'] = $this->socioModel->where('idusuario', $this->session->id)->first();
 
             //Actualizo el estado de los patrocinados en cada inicio
             $patrocinados = $this->socioModel->select('id')->where('patrocinador', $data['id'])->findAll();
@@ -225,12 +251,15 @@ class Home extends BaseController {
             $data['micodigo'] = $this->socioModel->find($this->session->id);
             $data['rangos'] = $this->rangoModel->findAll();
             
-            $data['mi_equipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,fecha_inscripcion,idusuario,idrango,socios.estado as estado_socio,
-                                nombre,cedula,telefono,email,idrol,rango')
-                                ->where('patrocinador', $data['micodigo']->id)
-                                ->join('usuarios', 'usuarios.id=socios.idusuario','left')
-                                ->join('rangos', 'rangos.id=socios.idrango', 'left')
-                                ->findAll();
+            $data['mi_equipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,fecha_inscripcion,idusuario,idrango,
+                            socios.estado as estado_socio,nombre,cedula,telefono,email,idrol,rango')
+                            ->where('patrocinador', $data['micodigo']->id)
+                            ->join('usuarios', 'usuarios.id=socios.idusuario','left')
+                            ->join('rangos', 'rangos.id=socios.idrango', 'left')
+                            ->findAll();
+
+            //Verifico si debe tener una penalización
+            $this->verificaPenalizacionBir($data['mi_equipo'], $data['mis_datos']);
             
 
             $data['pedidos'] = $this->pedidoModel->where('idsocio', $this->session->id)
@@ -282,7 +311,6 @@ class Home extends BaseController {
             }else{
                 
                 $this->histRangoModel->insert($histRangoData);
-
             }
             
             //Actualizo el rango en la tabla socios

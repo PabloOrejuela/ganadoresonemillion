@@ -2,3 +2,15 @@
     font-size: 0.85em;
     word-break: keep-all;
 }
+
+.sidebar-wrapper{
+    background-color: rgb(4, 4, 4, 0.7) !important;
+}
+
+.sidebar-brand{
+    background-color: rgb(4, 4, 4, 0.7) !important;
+}
+
+.card-body{
+    font-size: 0.8em;
+}

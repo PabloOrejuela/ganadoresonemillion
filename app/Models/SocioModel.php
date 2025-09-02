@@ -24,6 +24,7 @@ class SocioModel extends Model {
         'idrango',
         'estado',
         'nodopadre',
+        'penalizacion',
         'posicion',
         'porcentaje_billetera'
     ];
