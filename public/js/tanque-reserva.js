@@ -76,41 +76,6 @@ botonesPosicion.forEach(btn => {
 });
 
 
-// btnActualizarPosicion.addEventListener('click', function(e) {
-//     //e.stopPropagation()
-
-//     let id = document.getElementById('id').value
-//     let patrocinador = document.getElementById('patrocinador').value
-//     let tableDatos = document.getElementById('table-datos')
-
-//     console.log('nodopadre: '.selectPosicionModal); exit;
-//     $.ajax({
-//         method:"GET",
-//         dataType:"html",
-//         url: "setPosition",
-//         data: {
-//             id: id,
-//             patrocinador: patrocinador,
-//             nodopadre: selectPosicionModal.selectedIndex,
-//             posicion: selectPiernasModal.selectedIndex
-//         },
-//         beforeSend: function (f) {
-//             //$('#cliente').html('Cargando ...');
-//         },
-//         success: function(res){
-//             let datos = JSON.parse(res)
-//             let tableDatos = document.getElementById('table-datos')
-//             if (res) {
-//                 alertaMensaje("La asignación de posición ha sido correcta", 1000, "success")
-//             }else{
-//                 alertaMensaje("Hubo un problema y no se pudo asignar la posición", 1000, "error")
-//             }
-            
-//         }
-//     });
-
-// })
-
 $(document).ready(function () {
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
     $('#datatablesSimple').DataTable({

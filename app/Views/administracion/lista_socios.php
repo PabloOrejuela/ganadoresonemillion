@@ -7,16 +7,16 @@
     <!--begin::Body-->
     <div class="card-body">
         <!--begin::Row-->
-        <div class="row g-3 col-md-9">
-            <table id="datatablesSimple" class="table table-bordered table-striped mt-1">
+        <div class="row g-3">
+            <table id="datatablesSimple" class="table table-bordered table-striped mt-1 tabla-responsive">
                 <thead>
                     <th id="td-left">Id</th>
                     <th>Nombre</th>
                     <th>Documento</th>
+                    <th>ACCIONES</th>
                     <th>Recompra</th>
                     <th>Saldo a pagar</th>
                     <th>Estado</th>
-                    <th>ACCIONES</th>
 
                 </thead>
                 <tbody>
@@ -56,23 +56,6 @@
                                 echo '<td id="td-left">'.$socio->id.'</td>';
                                 echo '<td>'.$socio->nombre.'</td>';
                                 echo '<td>'.$socio->cedula.'</td>';
-                               
-                            
-                                //verifica si el socio tiene recompra activa
-                                if (isset($recompra)) {
-                                    echo '<td>HA REALIZADO UNA RECOMPRA</td>';
-                                    echo '<td>'.$saldo.'</td>';
-                                } else {
-                                    echo '<td>NO REGISTRA RECOMPRA</td>';
-                                    echo '<td>0.00</td>';
-                                }
-
-                                //verifica el estado de un socio
-                                if ($socio->estado_socio == 1) {
-                                    echo '<td>ACTIVO</td>';
-                                } else {
-                                    echo '<td>INACTIVO</td>';
-                                }
 
                                 if (isset($recompra) && $recompra->estado == 0) {
                                     echo '<td id="td-ventas">
@@ -98,6 +81,23 @@
                                     echo '<td id="td-ventas">
                                         
                                     </td>';
+                                }
+                               
+                            
+                                //verifica si el socio tiene recompra activa
+                                if (isset($recompra)) {
+                                    echo '<td>HA REALIZADO UNA RECOMPRA</td>';
+                                    echo '<td>'.$saldo.'</td>';
+                                } else {
+                                    echo '<td>NO REGISTRA RECOMPRA</td>';
+                                    echo '<td>0.00</td>';
+                                }
+
+                                //verifica el estado de un socio
+                                if ($socio->estado_socio == 1) {
+                                    echo '<td>ACTIVO</td>';
+                                } else {
+                                    echo '<td>INACTIVO</td>';
                                 }
                                 
                                 echo '</tr>';

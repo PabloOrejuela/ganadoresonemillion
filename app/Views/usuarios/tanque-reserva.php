@@ -8,9 +8,9 @@
     <div class="card-body">
         <!--begin::Row-->
         <div class="row g-3">
-            <table id="datatablesSimple" class="table table-bordered table-striped mt-2">
+            <table id="datatablesSimple" class="table table-bordered table-striped mt-2 table-responsive">
                 <thead>
-                    <th class="col-md-1">Codigo</th>
+                    <th class="col-md-1">Id</th>
                     <th class="col-md-4">Nombre</th>
                     <th class="col-md-1">Documento</th>
                     <th class="col-md-1">Fecha de registro</th>

@@ -20,3 +20,8 @@
     font-weight: bold;
     padding: 4px;
 }
+
+.tabla-responsive {
+    overflow-x: auto; /* O 'scroll' para forzar el scroll */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
