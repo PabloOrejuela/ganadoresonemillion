@@ -35,7 +35,7 @@
         <!--end::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 2-->
-          <div class="small-box text-bg-success">
+          <div class="small-box text-bg-default">
             <div class="inner">
               <h5>Total retirado</h5>
               <p>$ <?= isset($total_retirado[0]->total) ? $total_retirado[0]->total : '0.00'; ?> retirado o movido de su cuenta</p>
@@ -53,7 +53,7 @@
             </svg>
             <a
               href="#"
-              class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
+              class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
             >
               Mas información <i class="bi bi-link-45deg"></i>
             </a>
@@ -63,7 +63,7 @@
         <!--end::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 3-->
-          <div class="small-box text-bg-warning">
+          <div class="small-box text-bg-default">
             <div class="inner">
               <h5>Importe total:</h5>
               <p>$ <?= isset($total_acreditado[0]->total) ? $total_acreditado[0]->total : '0.00'; ?> dinero que ha entrado en su cuenta digital</p>
@@ -91,7 +91,7 @@
         <!--end::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 4-->
-          <div class="small-box text-bg-danger">
+          <div class="small-box text-bg-default">
             <div class="inner">
               <h5>Bono de Inicio Pendiente</h5>
               <p>$<?= $bir_pendientes[0]->totalBir ? $bir_pendientes[0]->totalBir : '0'; ?> pendiente de asignar</p>
@@ -116,7 +116,7 @@
             </svg>
             <a
               href="#"
-              class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
+              class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
             >
               Mas información <i class="bi bi-link-45deg"></i>
             </a>
@@ -225,6 +225,7 @@
                 <tbody>
                   <?php
                     $num = 1;
+                    $total = 0;
                     if ($billetera) {
                       
                       foreach ($billetera as $key => $mov) {
@@ -237,14 +238,24 @@
                               echo '<td>EGRESO</td>';
                             }else if($mov->tipo_mov == 3) {
                               echo '<td>INGRESO</td>';
+                            }else if($mov->tipo_mov == 4) {
+                              echo '<td>PAGO SUSCRIPCIÓN</td>';
                             }
                             
-                        echo'<td>'.$mov->concepto.'</td>
-                            <td>'.$mov->cantidad.'</td>';
+                        echo'<td>'.$mov->concepto.'</td>';
+
+                            if ($mov->tipo_mov == 2 || $mov->tipo_mov == 4) {
+                              echo '<td id="td-result-negative">'.number_format(($mov->cantidad * -1),2).'</td>';
+                              $total -= $mov->cantidad;
+                            }else{
+                              echo '<td id="td-result">'.number_format($mov->cantidad,2).'</td>';
+                              $total += $mov->cantidad;
+                            }
                             
                         echo '</tr>';
                         $num++;
                       }
+                      echo '<tr><td colspan="4" id="td-result">SALDO ACTUAL DISPONIBLE: </td><td id="td-result">'.number_format($total,2).'</td></tr>';
                     }else{
                       echo '<tr class="align-middle">
                             <td>1.</td>

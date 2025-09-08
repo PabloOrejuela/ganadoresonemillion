@@ -36,7 +36,6 @@ class Administracion extends BaseController {
             $data['mi_equipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,fecha_inscripcion,idusuario,
                                 idrango,socios.estado as estado_socio,nombre, usuarios.cedula as cedula,telefono,email,idrol,
                                 rango,socios.id as idsocio')
-                                ->where('patrocinador', $data['micodigo']->id)
                                 ->join('usuarios', 'usuarios.id=socios.idusuario')
                                 ->join('rangos', 'rangos.id=socios.idrango')
                                 ->findAll();//echo $this->db->getLastQuery();

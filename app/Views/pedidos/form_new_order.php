@@ -119,13 +119,14 @@
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-md-2" id="div-saldo-billetera">
-                <label for="saldo-billetera" class="form-label">Saldo Billetera Digital</label>
+                <label for="saldo-billetera" class="form-label">Saldo Billetera Digital **</label>
                     <input
                         type="text"
                         class="form-control"
                         id="saldo-billetera"
                         name="saldoBilletera"
                         value=""
+                        readonly
                     />
                 </div>
                 <!--end::Col-->
@@ -155,6 +156,14 @@
                         id="floatingTextarea2" 
                         style="height: 100px" 
                         ><?= old('observacion_pedido'); ?></textarea>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-6">
+                    <ul>
+                        <li>Si el saldo de la billetera digital es superior a la cantidad a pagar solo se restará el valor de la cantidad a pagar y el saldo quedará en su billetera digital</li>
+                        <li>Si el saldo de la billetera digital es inferior a la cantidad a pagar se tomará el total del saldo y el resto quedará como pendiente para que sea cancelado por algún otro método de pago</li>
+                    </ul>
                 </div>
                 <!--end::Col-->
             </div>

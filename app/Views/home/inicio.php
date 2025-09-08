@@ -8,7 +8,7 @@
         <!--begin::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 1-->
-          <div class="small-box text-bg-warning">
+          <div class="small-box text-bg-default">
             <div class="inner">
               <h3><?= $pts->pts_izq; ?> pts</h3>
               <p>Total Volumen izquierda: <?= $pts->left_leg; ?> socios activos</p>
@@ -26,7 +26,7 @@
             </svg>
             <a
               href="#"
-              class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
+              class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
             >
               Mas información <i class="bi bi-link-45deg"></i>
             </a>
@@ -36,7 +36,7 @@
         <!--end::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 2-->
-          <div class="small-box text-bg-warning">
+          <div class="small-box text-bg-default">
             <div class="inner">
               <h3><?= $pts->pts_der; ?> pts</h3>
               <p>Total Volumen derecha: <?= $pts->right_leg; ?> socios activos</p>
@@ -54,7 +54,7 @@
             </svg>
             <a
               href="#"
-              class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover"
+              class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover"
             >
               Mas información <i class="bi bi-link-45deg"></i>
             </a>
@@ -64,10 +64,10 @@
         <!--end::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 3-->
-          <div class="small-box text-bg-warning">
+          <div class="small-box text-bg-default">
             <div class="inner">
-              <h3>$ <?= $bir_pendientes[0]->totalBir; ?></h3>
-              <p>BIR Pendientes de cobrar </p>
+              <h3>$ <?= $bir_pendientes->totalBir > 0 ? $bir_pendientes->totalBir : '0.00'; ?></h3>
+              <p>BIR percibidos por registro de socios nuevos </p>
             </div>
             <svg
               class="small-box-icon"
@@ -92,7 +92,7 @@
         <!--end::Col-->
         <div class="col-lg-3 col-6">
           <!--begin::Small Box Widget 4-->
-          <div class="small-box text-bg-warning-rango">
+          <div class="small-box text-bg-secondary">
             <div class="inner">
               <h3>Rango</h3>
               <p id="p-rango"><?= $session->rango; ?> | Estado: <?= $session->estado_suscripcion; ?></p>
@@ -236,8 +236,8 @@
                     <td><?= $session->estado_suscripcion; ?></td>
                   </tr>
                   <tr>
-                    <td id="td-bold">BIR Pendientes de cobrar: </td>
-                    <td id="td-bold">$ <?= $bir_pendientes[0]->totalBir; ?></td>
+                    <td id="td-bold">BIR Percibidos por registro de usuarios nuevos: </td>
+                    <td id="td-bold">$ <?= $bir_pendientes->totalBir > 0 ? $bir_pendientes->totalBir: '0.00'; ?></td>
                   </tr>
                   <tr>
                     <td>Rango actual: </td>
@@ -269,7 +269,7 @@
                   </tr>
                   <tr>
                     <td id="td-bold-total">TOTAL A COBRAR POR EL MES DE: <?= $resumen['mes'].' DEL '.$resumen['anio'] ; ?></td>
-                    <td id="td-bold-total">$ <?= number_format(($resumen['income'] + $bir_pendientes[0]->totalBir), 2) ?></td>
+                    <td id="td-bold-total">$ <?= number_format($resumen['income'], 2) ?></td>
                   </tr>
                 </tbody>
               </table>

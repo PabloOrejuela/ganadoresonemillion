@@ -54,7 +54,7 @@ class Pedidos extends BaseController {
 
         $data['mes_actual'] = $this->meses[date('n')];
         $data['metodosPago'] = $this->metodosPago;
-
+ 
         //echo '<pre>'.var_export($data['paquetes'][0]->pvp, true).'</pre>';exit;
 
         $data['title'] = 'REGISTRO DE PAGO DE MEMBRESÍA';
@@ -76,7 +76,11 @@ class Pedidos extends BaseController {
         $total = 0;
 
         foreach ($data['billetera'] as $key => $mov) {
-            $total += $mov->cantidad;
+            if ($mov->tipo_mov == '1' || $mov->tipo_mov == '3') {
+                $total += $mov->cantidad;
+            }else if($mov->tipo_mov == '2' || $mov->tipo_mov == '4'){
+                $total -= $mov->cantidad;
+            }
         }
             
         $res['saldo'] = $total;
@@ -114,13 +118,56 @@ class Pedidos extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
 
-                
                 //Inserto el nuevo pedido
                 $res = $this->pedidoModel->insert($pedido);
 
+                //Hago el pago con la billetera digital
+                if ($pedido['metodo_pago'] == 2) {
+
+                    //Verfico si el saldo en la billetera es menor o igual a la cantidad que se debe, 
+                    // si el saldo es menor o igual hago el pago con todo el saldo ysi es mayor solo pago la cantidad
+                    $cantPagar = $pedido['total'];
+
+                    if ($pedido['saldo_billetera_digital'] <= $pedido['total']) {
+                        $cantPagar = $pedido['saldo_billetera_digital'];
+                    }
+
+                    //Saco de la billetera y paso a pagos Tipo mov = 4
+                    $mov = [
+                        'idsocio' => $pedido['idsocio'],
+                        'fecha' => $pedido['fecha_compra'],
+                        'tipo_mov' => 4,
+                        'cantidad' => $cantPagar,
+                        'concepto' => 'PAGO DE MEMBRESÍA',
+                        'origen' => $pedido['idsocio'], //Es el Id de el socio de la billetera, como es una transacción interna es el mismo socio,
+                    ];
+
+
+                    $this->billeteraDigitalModel->insert($mov);
+
+                    //registro el pago
+                    $pago = [
+                        'abono' => $cantPagar,
+                        'fecha' => $pedido['fecha_compra'],
+                        'observacion' => $pedido['observacion_pedido'],
+                        'idpedido' => $res,
+                    ];
+
+                    $this->pagoModel->insert($pago);
+
+                    //actualizo los saldos del pedido
+                    $pedido = [
+                        'abono' => $cantPagar,
+                        'saldo' => $pedido['total'] - $cantPagar,
+                    ];
+
+                    $this->pedidoModel->update($res, $pedido);
+
+                }
 
                 if ($res) {
-                    //Se actualiza los puntos, cartera, 
+                    //Aquí se deben actualizar los puntos, HACER UNA FUNCIÓN QUE ESE PUEDA LLAMAR AQUÍ
+
                     
                 }else{
 

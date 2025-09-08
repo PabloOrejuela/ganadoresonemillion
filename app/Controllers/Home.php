@@ -273,7 +273,7 @@ class Home extends BaseController {
             $data['bir_pendientes'] = $this->birModel->selectSum('cantidad', 'totalBir')
                 ->where('idsocio', $this->session->id)
                 ->where('estado', 0)
-                ->findAll();
+                ->first();
 
             $rangoAccede = $this->rangoModel->_verificaMeta($data['pts'], $data['rangos']);
 

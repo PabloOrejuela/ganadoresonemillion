@@ -17,10 +17,15 @@ selectMetodoPago.addEventListener('change', function(e) {
             success: function(result){
                 
                 let saldo = result.saldo
-                txtBilletera.style.visibility = "visible"
-                txtBilletera.value = saldo
+                if (saldo > 0) {
+                    txtBilletera.style.visibility = "visible"
+                    txtBilletera.value = saldo
 
-                alertaMensaje("Pago con saldo disponible de la billetera digital", 2000, 'success')
+                    alertaMensaje("Pago con saldo disponible de la billetera digital", 2000, 'success')
+                }else{
+                    alertaMensaje("No se puede realizar el pago con saldo disponible de la billetera digital debido a que no tiene fondos disponibles ", 4000, 'error')
+                }
+                
             }
         });
     }else{

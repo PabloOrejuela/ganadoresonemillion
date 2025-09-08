@@ -30,6 +30,7 @@ class BilleteraDigital extends BaseController {
                                     ->selectSum('cantidad', 'total')
                                     ->where('idsocio', $this->session->id)
                                     ->where('tipo_mov', 2)
+                                    ->orWhere('tipo_mov', 4)
                                     ->findAll();
 
             $data['total_acreditado'] = $this->billeteraDigitalModel
@@ -42,8 +43,13 @@ class BilleteraDigital extends BaseController {
             $data['idsocio'] = $this->socioModel->where('idusuario', $this->session->id)->first();
 
             $total = 0;
+
             foreach ($data['billetera'] as $key => $mov) {
-                $total += $mov->cantidad;
+                if ($mov->tipo_mov == '1' || $mov->tipo_mov == '3') {
+                    $total += $mov->cantidad;
+                }else if($mov->tipo_mov == '2' || $mov->tipo_mov == '4'){
+                    $total -= $mov->cantidad;
+                }
             }
             
             $data['total'] = $total;
