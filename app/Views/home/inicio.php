@@ -236,6 +236,10 @@
                     <td><?= $session->estado_suscripcion; ?></td>
                   </tr>
                   <tr>
+                    <td>Debe renovar su suscripción: </td>
+                    <td style="background-color: <?= $colorSemana; ?>;font-weight: bold;">La semana desde el lunes <?= $semanaRecompra[0]; ?> al domingo <?= $semanaRecompra[6]; ?></td>
+                  </tr>
+                  <tr>
                     <td id="td-bold">BIR Percibidos por registro de usuarios nuevos: </td>
                     <td id="td-bold">$ <?= $bir_pendientes->totalBir > 0 ? $bir_pendientes->totalBir: '0.00'; ?></td>
                   </tr>

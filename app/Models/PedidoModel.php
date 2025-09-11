@@ -67,4 +67,34 @@ class PedidoModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;                               
     }
+
+    function _getRecompraMes($fechaInicio, $fechaFinal){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where($this->table.'.idsocio', 1);
+        $builder->where( "fecha_compra BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('fecha_compra', 'desc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getColorSemana($semana){
+        $colores = [
+            1 => '#dbac77',
+            2 => '#7bb6d2',
+            3 => '#e0d998',
+            4 => '#bcd48e',
+            5 => '#dbac77',
+        ];
+
+        return $colores[$semana];
+    }
 }

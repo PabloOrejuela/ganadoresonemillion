@@ -225,6 +225,86 @@ class Home extends BaseController {
         */
     }
 
+    public function getSemanaRecompra($fechaInscripcion, $recompra){
+
+        // Crear objeto DateTime a partir de la fecha base
+        $fecha = new \DateTime($fechaInscripcion);
+
+        // Tomar el día de la inscripción
+        $dia = $fecha->format('d');
+
+        // Usar mes y año actuales para actualizar la fecha al mes actual
+        $hoy = new \DateTime();
+        $anioActual = $hoy->format('Y');
+        $mesActual = $hoy->format('m');
+
+        // Crear nueva fecha con año y mes actual, pero mismo día de inscripción
+        $fechaBase = \DateTime::createFromFormat('Y-m-d', "$anioActual-$mesActual-$dia");
+
+        //Si tiene recompra del mes debe dar la fecha del mes siguiente, caso contrario la recompra debe ser el mes actual
+        if ($recompra) {
+            // Sumar un mes para la próxima renovación
+            $fechaBase->modify('+1 month');
+        }
+
+        // Clonar la fecha para no perder referencia
+        $fechaRenovacion = clone $fechaBase;
+
+        // Obtener el día de la semana de la fecha de renovación (1 = Lunes, 7 = Domingo)
+        $diaSemana = (int)$fechaRenovacion->format('N');
+
+        // Calcular inicio de la semana (lunes)
+        $inicioSemana = clone $fechaRenovacion;
+        $inicioSemana->modify('-' . ($diaSemana - 1) . ' days');
+
+        // Calcular fin de la semana (domingo)
+        $finSemana = clone $fechaRenovacion;
+        $finSemana->modify('+' . (7 - $diaSemana) . ' days');
+
+        // Generar todas las fechas entre lunes y domingo
+        $fechasSemana = [];
+        $iterador = clone $inicioSemana;
+        while ($iterador <= $finSemana) {
+            $fechasSemana[] = $iterador->format('Y-m-d');
+            $iterador->modify('+1 day');
+        }
+
+        return $fechasSemana;
+
+    }
+
+    function semanaDelMesDesdeRango(\DateTime $lunes, \DateTime $domingo) {
+        // Usamos el lunes de la semana para calcular
+        $diaDelMes = (int)$lunes->format('j');
+
+        // Primer día del mes
+        $primerDiaMes = new \DateTime($lunes->format('Y-m-01'));
+
+        // Día de la semana del primer día del mes (1 = lunes, 7 = domingo)
+        $diaSemanaPrimerDia = (int)$primerDiaMes->format('N');
+
+        // Offset: días que se "desplazan" antes de la primera semana completa
+        $offset = $diaSemanaPrimerDia - 1;
+
+        // Número de semana
+        $semana = (int)ceil(($diaDelMes + $offset) / 7);
+
+        return $semana;
+    }
+
+    function getRecompra($fecha, $idsocio){
+        $fecha = new \DateTime($fecha);
+        $diasDelMes = $fecha->format('t');
+
+        $inicioMes = date('Y-m').'-01';
+        $finMes = date('Y-m').'-'.$diasDelMes;
+
+        //hago la consulta
+        $recompra = $this->pedidoModel->_getRecompraMes($inicioMes, $finMes);
+
+        return $recompra;
+    }
+
     public function inicio() {
         
         $data = $this->acl();
@@ -237,6 +317,14 @@ class Home extends BaseController {
 
             //Obtengo mis datos
             $data['mis_datos'] = $this->socioModel->where('idusuario', $this->session->id)->first();
+            $data['recompra'] = $this->getRecompra(date('Y-m-d'), $this->session->id);
+
+            $data['semanaRecompra'] = $this->getSemanaRecompra($data['mis_datos']->fecha_inscripcion, $data['recompra']);
+            $numeroSemana = $this->semanaDelMesDesdeRango(new \DateTime($data['semanaRecompra'][0]), new \DateTime($data['semanaRecompra'][1]));
+
+            $data['colorSemana'] = $this->pedidoModel->_getColorSemana($numeroSemana);
+
+            //echo '<pre>'.var_export($data['colorSemana'], true).'</pre>';exit;
 
             //Actualizo el estado de los patrocinados en cada inicio
             $patrocinados = $this->socioModel->select('id')->where('patrocinador', $data['id'])->findAll();
@@ -257,6 +345,11 @@ class Home extends BaseController {
                             ->join('usuarios', 'usuarios.id=socios.idusuario','left')
                             ->join('rangos', 'rangos.id=socios.idrango', 'left')
                             ->findAll();
+            
+            //Actualizo el estado de la suscripción en la sessión
+            $estado = '';
+            $data['micodigo']->estado == 1 ? $estado =  "ACTIVO" : $estado = "INACTIVO";
+            $this->session->set('estado_suscripcion', $estado);
 
             //Verifico si debe tener una penalización
             $this->verificaPenalizacionBir($data['mi_equipo'], $data['mis_datos']);
@@ -265,6 +358,7 @@ class Home extends BaseController {
             $data['pedidos'] = $this->pedidoModel->where('idsocio', $this->session->id)
                                                     ->join('paquetes', 'paquetes.id=pedidos.idpaquete')
                                                     ->findAll();
+
             $data['pts'] = $this->puntosRedModel->where('idsocio', $this->session->id)
                                                     ->where('mes', date('m'))
                                                     ->where('anio', date('Y'))
@@ -288,9 +382,10 @@ class Home extends BaseController {
             //echo '<pre>'.var_export($data['resumen'], true).'</pre>';exit;
             //actualizo el historial de rango en la db
             $histRango = $this->histRangoModel->where('idsocio', $this->session->id)
-                                                    ->where('month', $this->mes)
-                                                    ->where('year', $this->anio)
-                                                    ->first();
+                                ->where('month', $this->mes)
+                                ->where('year', $this->anio)
+                                ->first();
+
             $histRangoData = [
                 'year' => $this->anio,
                 'month' => $this->mes,
