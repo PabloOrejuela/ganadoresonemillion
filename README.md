@@ -9,4 +9,5 @@
 
 <h2>Corrección de errores</h2>
 <ul>
+    <li>Se hizo una corrección de seguridad</li>
 </ul>

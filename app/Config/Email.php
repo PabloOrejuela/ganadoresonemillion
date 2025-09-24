@@ -10,6 +10,11 @@ class Email extends BaseConfig
     public string $fromName   = '';
     public string $recipients = '';
 
+    public function __construct() {
+
+        $this->SMTPUser = env('email.SMTPUser');
+        $this->SMTPPass = env('email.SMTPPass');
+    }
 
     /**
      * The "user agent"
@@ -34,12 +39,12 @@ class Email extends BaseConfig
     /**
      * SMTP Username
      */
-    public string $SMTPUser = '81203f62286044418d8285801660f476';
+    public string $SMTPUser = '';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = '70c5c047354976636ae30afac4052b92';
+    public string $SMTPPass = '';
 
     /**
      * SMTP Port
@@ -119,4 +124,10 @@ class Email extends BaseConfig
      * Enable notify message from server
      */
     public bool $DSN = false;
+
+    function getSistemaData(){
+        $sistema = $this->sistemaModel->first();
+
+        return $sistema;
+    }
 }
