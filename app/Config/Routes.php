@@ -15,6 +15,9 @@ $routes->get('select-ciudades', 'Home::selectCiudades');
 $routes->get('mi-web', 'Home::linkMiWeb');
 $routes->get('contactos', 'Home::contactos');
 $routes->get('mi-web/(:num)/(:any)', 'Home::miWeb/$1/$2');
+$routes->get('email', 'Home::email');
+$routes->get('forgot-password', 'Login::forgotPassword');
+$routes->post('recupera-password', 'Login::recuperaPassword');
 
 //USUARIOS
 $routes->get('new-member', 'Usuarios::registrarNuevoMiembro');

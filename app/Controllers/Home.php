@@ -23,6 +23,28 @@ class Home extends BaseController {
         return $data;
     }
 
+    public function email(){
+        $email = \Config\Services::email();
+        
+        $email->setFrom('appdvp.dev@gmail.com', 'Admin','appdvp.dev@gmail.com');
+        $email->setReplyTo('porejuelac@gmail.com');
+
+        $email->setTo('hostill@gmail.com');
+
+        $email->setCC('appdvp.dev@gmail.com');
+
+        $email->setSubject('Email de prueba');
+
+        $email->setMessage('Estamos probando los emails');
+        
+        if ($email->send()) {
+            return '<h3>Email enviado con éxito</h3>';
+        }else{
+            echo $email->printDebugger(['headers']);
+         
+        }
+    }
+
 
     public function __construct(){
 
@@ -317,6 +339,11 @@ class Home extends BaseController {
 
             //Obtengo mis datos
             $data['mis_datos'] = $this->socioModel->where('idusuario', $this->session->id)->first();
+
+            if (!$data['mis_datos']) {
+                return redirect()->to('logout');
+            }
+            
             $data['recompra'] = $this->getRecompra(date('Y-m-d'), $this->session->id);
 
             $data['semanaRecompra'] = $this->getSemanaRecompra($data['mis_datos']->fecha_inscripcion, $data['recompra']);

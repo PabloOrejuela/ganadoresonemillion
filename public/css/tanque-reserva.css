@@ -3,16 +3,20 @@
 }
 
 #modal-body{
-
+    width: 100%;
 }
 
 #select-piernas{
     width: 300px;
 }
 
+#sitio-ocupado{
+    width: 35px;
+}
+
 #select-posicion{
     margin-top: 10px;
-    width: 300px;
+    width: 100%;
 }
 
 .btn-outline-success{
@@ -24,4 +28,37 @@
 .tabla-responsive {
     overflow-x: auto; /* O 'scroll' para forzar el scroll */
     width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+.modal-dialog{
+    width: 80% !important;
+}
+
+#datatableEquipo {
+    font-size: 0.8em;
+    width: 100%;
+}
+
+/*Estilos de la tabla*/
+
+.pagination{
+    --bs-pagination-font-size: 0.7em !important;
+}
+
+#datatableEquipo_info{
+    font-size: 0.7em !important;
+}
+
+.dt-length{
+    font-size: 0.7em;
+}
+
+.search .dt-search-1{
+    margin-bottom: 15px;
+    font-size: 0.7em;
+}
+
+.row{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

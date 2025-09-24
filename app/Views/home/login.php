@@ -15,7 +15,7 @@
         ?>
         <form action="<?= base_url(); ?>validate_login" method="post" class="form">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="user" placeholder="usuario" value="wolf">
+            <input type="text" class="form-control" name="user" placeholder="usuario" value="">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -24,7 +24,7 @@
           </div>
           <p id="error-message"><?= session('errors.user');?> </p>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="17055">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -61,20 +61,9 @@
           </div>
         </form>
 
-        <!-- <div class="social-auth-links text-center mb-3">
-          <p> o tal vés...</p>
-          <a href="#" class="btn btn-block btn-primary">
-            <i class="fab fa-facebook mr-2"></i> Ingresar usando Facebook
-          </a>
-          <a href="#" class="btn btn-block btn-danger">
-            <i class="fab fa-google-plus mr-2"></i> Ingresar usando Google+
-          </a>
-        </div> -->
-        <!-- /.social-auth-links -->
-
-        <!-- <p class="mb-1">
-          <a href="forgot-password.html">Olvidé mi password</a>
-        </p> -->
+        <p class="mb-1 mt-2">
+          <a href="<?= site_url(); ?>forgot-password" id="link-forgot">Olvidé mi password, click aquí para recuperarlo</a>
+        </p>
       </div>
       <!-- /.login-card-body -->
     </div>

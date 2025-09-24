@@ -13,9 +13,8 @@
                     <th class="col-md-1">Id</th>
                     <th class="col-md-4">Nombre</th>
                     <th class="col-md-1">Documento</th>
-                    <th class="col-md-1">Fecha de registro</th>
                     <th class="col-md-1">Seleccionar posición</th>
-                    <th class="col-md-1" id="div-center">Estado</th>
+                    <th class="col-md-1">Fecha de registro</th>
                 </thead>
                 <tbody id="table-datos">
                     <?php
@@ -24,24 +23,20 @@
                                 echo '<tr>
                                         <td>'.$socio->id.'</td>
                                         <td>'.$socio->nombre.'</td>
-                                        <td>'.$socio->cedula.'</td>
-                                        <td>'.$socio->fecha_inscripcion.'</td>
-                                        <td id="div-center">
+                                        <td>'.$socio->cedula.'</td>';
+                                        
+                                echo    '<td id="div-center">
                                             <a type="button" 
                                                 id="selectPosition_'.$socio->id.'" 
-                                                href="#" 
+                                                href="?id='.$socio->id.'" 
                                                 data-id="'.$socio->id.'"
                                                 data-patrocinador="'.$socio->patrocinador.'"
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#selectPosition"
-                                                class="btn btn-outline-success"
+                                                class="btn btn-outline-success abrir-modal-posicion"
                                             >Seleccionar posición</a>
                                         </td>';
-                                        if ($socio->estado == 1) {
-                                            echo '<td id="div-center">ACTIVO</td>';
-                                        } else {
-                                            echo '<td id="div-center">INACTIVO</td>';
-                                        }
+                                echo    '<td>'.date('Y-m-d', strtotime($socio->fecha_inscripcion)).'</td>';
                                         
                                 echo '</tr>';
                             }
@@ -64,46 +59,72 @@
 
 
 <!-- Modal Select Posición-->
-<div class="modal fade" id="selectPosition" tabindex="-1" aria-labelledby="selectPosition" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="selectPosition" tabindex="-1" aria-labelledby="selectPosition" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectPosition">Seleccionar posición</h5>
+                <h5 class="modal-title" id="selectPosition">Seleccionar posición para ubicar al socio</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="get" action="<?= site_url().'setPosition';?>">
                 <div class="modal-body" id="modal-body">
                     <h5 class="modal-title" id="staticBackdropLabel">Mi equipo</h5>
-                    <input class="form-control" type="hidden" name="id" id="id">
+                    <input class="form-control" type="hidden" name="id" id="input-id">
                     <input class="form-control" type="hidden" name="patrocinador" id="patrocinador">
                     <input class="form-control" type="hidden" name="nombrepatrocinador" id="nombrepatrocinador" value="<?= $patrocinador ?>">
-                    <select 
-                        class="form-select" 
-                        id="select-piernas" 
-                        name="piernas"
-                        data-style="form-control" 
-                        data-live-search="true" 
-                    >
-                        <option selected>-- Seleccione una posición --</option>
-                        <option value="1">Abajo a la izquierda de</option>
-                        <option value="2">Abajo a la derecha de</option>
-                    </select>
-                    <select 
-                        class="form-select" 
-                        id="select-posicion" 
-                        name="posicion"
-                        data-style="form-control" 
-                        data-live-search="true" 
-                    >
-                    </select>
+
+                    <table class="table tabla-responsive table-bordered table-striped" id="datatableEquipo">
+                        <thead>
+                            <th>ID</th>
+                            <th>Cod</th>
+                            <th>Nombre</th>
+                            <th>Pierna Izq</th>
+                            <th>Pierna Der</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $id_excluir = isset($_GET['id']) ? $_GET['id'] : null;
+                                
+                                if ($miEquipo) {
+                                    foreach ($miEquipo as $key => $socio) {
+                                        // Verfifico si es el mismo socio, entonces lo salto
+                                        if ($socio->id != $id_excluir) {
+                                            
+                                            // Verifica si tiene hijo a la izquierda
+                                            $hijoIzq = model('SocioModel')
+                                                ->where('nodopadre', $socio->id)
+                                                ->where('posicion', '1')
+                                                ->first();
+                                            $izq = $hijoIzq 
+                                                ? '<img src="'.site_url().'public/images/person.png" alt="ocupado" id="sitio-ocupado">' 
+                                                : '<a href="#" class="link-posicion" data-id="'.$socio->id.'" data-posicion="1" data-patrocinador="'.$patrocinador.'" data-nodopadre="'.$socio->id.'">
+                                                    <img src="'.site_url().'public/images/free_icon.png" alt="ocupado" id="sitio-ocupado"></a>';
+
+                                            // Verifica si tiene hijo a la derecha
+                                            $hijoDer = model('SocioModel')
+                                                ->where('nodopadre', $socio->id)
+                                                ->where('posicion', '2')
+                                                ->first();
+                                            $der = $hijoDer 
+                                                ? '<img src="'.site_url().'public/images/person.png" alt="ocupado" id="sitio-ocupado">' 
+                                                : '<a href="#" class="link-posicion" data-id="'.$socio->id.'" data-posicion="2" data-patrocinador="'.$patrocinador.'" data-nodopadre="'.$socio->id.'"><img src="'.site_url().'public/images/free_icon.png" alt="ocupado" id="sitio-ocupado"></a>';
+
+                                            echo '<tr>';
+                                            echo '<td>'.$socio->id.'</td>';
+                                            echo '<td>'.$socio->codigo_socio.'</td>';
+                                            echo '<td>'.$socio->nombre.'</td>';
+                                            echo '<td>'.$izq.'</td>';
+                                            echo '<td>'.$der.'</td>';
+                                            echo '</tr>';
+                                        }
+                                    }
+                                    
+                                }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
-                    <button 
-                        type="submit" 
-                        class="btn btn-secondary" 
-                        data-bs-dismiss="modal"
-                        id="btn-actualizar-posicion"
-                    >Actualizar</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </form>

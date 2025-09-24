@@ -16,12 +16,13 @@
         const todosLosNodos = <?php echo json_encode(array_values($todosLosSocios), JSON_UNESCAPED_UNICODE); ?>;
 
         // --- Construir árbol n-ario ---
-        function construirArbol(nodo, todos) {
+        function construirArbol(nodo, todos, nivel = 0, maxNivel = 5) {
             nodo.children = [];
+            if (nivel >= maxNivel) return; // Limita la profundidad a 6 niveles (0 a 5)
             let hijos = todos.filter(h => String(h.nodopadre) === String(nodo.id));
             hijos.forEach(hijo => {
                 nodo.children.push(hijo);
-                construirArbol(hijo, todos);
+                construirArbol(hijo, todos, nivel + 1, maxNivel);
             });
         }
 
@@ -49,16 +50,19 @@
                 return;
             }
 
+            // El espacio se reduce a la mitad en cada nivel
+            const espacioBase = 450; // Ajustar este valor para más o menos separación inicial
+            const espacio = espacioBase / Math.pow(1.7, nivel);
+
             const hijosIzq = raiz.children.filter(c => c.posicion == 1);
             const hijosDer = raiz.children.filter(c => c.posicion == 2);
-            const espacio = 200;
 
             hijosIzq.forEach((hijo, i) => {
-                calcularPosiciones(hijo, nivel + 1, x - ((hijosIzq.length - i) * espacio));
+                calcularPosiciones(hijo, nivel + 1, x - espacio);
             });
 
             hijosDer.forEach((hijo, i) => {
-                calcularPosiciones(hijo, nivel + 1, x + ((i + 1) * espacio));
+                calcularPosiciones(hijo, nivel + 1, x + espacio);
             });
 
             raiz._x = x;
@@ -156,6 +160,19 @@
                 .attr("fill", "#000")
                 .style("font-size", "10px")
                 .text(d => "Estado: " + (d.data.estado == 1 ? "Activo" : "Inactivo"));
+            
+            // Centrar el gráfico en el nodo raíz
+            const centerX = width / 2;
+            const centerY = 100; // Ajustar este valor para centrar verticalmente si lo deseas
+            const offsetX = centerX - (raiz._x + 50)-100; // 50 es el translate inicial en g, le resto el valor de 100 para que se vea mas a la izquierda
+            const offsetY = centerY - (raiz._y + 50);
+            const initialScale = 0.7; // <--- Cambiar este valor para el zoom inicial (1 = 100%)
+            const initialTransform = d3.zoomIdentity
+                .translate(offsetX + 50, offsetY + 50)
+                .scale(initialScale);
+
+            svg.transition().duration(0).call(zoom.transform, initialTransform);
+            g.attr("transform", `translate(${offsetX + 50},${offsetY + 50})`);
         }
 
         dibujarArbol(data);

@@ -399,10 +399,10 @@ class Usuarios extends BaseController {
 
             $data['mi_equipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,fecha_inscripcion,idusuario,idrango,socios.estado as estado_socio,
                                 nombre, usuarios.cedula as cedula,telefono,email,idrol,rango,socios.id as idsocio')
-                                ->where('patrocinador', $data['micodigo']->id)
-                                ->join('usuarios', 'usuarios.id=socios.idusuario')
-                                ->join('rangos', 'rangos.id=socios.idrango')
-                                ->findAll();//echo $this->db->getLastQuery();
+                ->where('patrocinador', $data['micodigo']->id)
+                ->join('usuarios', 'usuarios.id=socios.idusuario')
+                ->join('rangos', 'rangos.id=socios.idrango')
+                ->findAll();//echo $this->db->getLastQuery();
 
             $data['title'] = 'Mi Equipo';
             $data['main_content'] = 'usuarios/lista_miembros';
@@ -428,9 +428,56 @@ class Usuarios extends BaseController {
             $data['session'] = $this->session;
             $data['sistema'] = $this->sistemaModel->findAll();
 
-            $data['miEquipo'] = $this->socioModel->where('patrocinador', $this->session->id)->findAll();
+            //Traigo a mi equipo, es decir a todos los socios que patrocina mas todos los que se encuentran abajo de el
+            // $data['miEquipo'] = $this->socioModel->select('socios.id as id,codigo_socio,patrocinador,nodopadre,posicion,fecha_inscripcion,idusuario,nombre')
+            //     ->join('usuarios','usuarios.id=socios.idusuario')
+            //     ->where('patrocinador', $this->session->id)->findAll();
 
-            //echo '<pre>'.var_export($data['miEquipo'], true).'</pre>';exit;
+            $sql = "WITH RECURSIVE descendientes AS (
+                SELECT 
+                    socios.id as id,
+                    socios.codigo_socio,
+                    socios.patrocinador,
+                    socios.nodopadre,
+                    socios.posicion,
+                    socios.fecha_inscripcion,
+                    socios.idusuario,
+                    usuarios.nombre,
+                    usuarios.email,
+                    usuarios.cedula
+                FROM socios
+                LEFT JOIN usuarios ON socios.idusuario = usuarios.id
+                WHERE socios.id = ?
+                UNION ALL
+                SELECT 
+                    s.id,
+                    s.codigo_socio,
+                    s.patrocinador,
+                    s.nodopadre,
+                    s.posicion,
+                    s.fecha_inscripcion,
+                    s.idusuario,
+                    u.nombre,
+                    u.email,
+                    u.cedula
+                FROM socios s
+                LEFT JOIN usuarios u ON s.idusuario = u.id
+                INNER JOIN descendientes d ON s.nodopadre = d.id
+            )
+            SELECT * FROM descendientes WHERE id != ?";
+
+            $query = $this->db->query($sql, [$this->session->id, $this->session->id]);
+            $data['miEquipo'] = $query->getResult();
+            
+            //Traigo los datos del patrocinador
+            $patrocinador = $this->socioModel
+                ->select('socios.id as id, nombre, codigo_socio, patrocinador')
+                ->join('usuarios', 'socios.idusuario=usuarios.id', 'left')
+                ->find($this->session->id);
+
+            // Lo agrego al inicio del arreglo
+            array_unshift($data['miEquipo'], $patrocinador);
+
             $data['idpatrocinador'] = $this->session->id;
             $data['patrocinador'] = $this->session->nombre;
 
@@ -453,20 +500,70 @@ class Usuarios extends BaseController {
 
     /**
      * Devuelve los socios del equipo que estén en una pierna de la organización
+     * Usada por: tanque-reserva.js
      *
      * @param 
      * @return void
      * @throws conditon
      **/
+    // public function getSocios() {
+
+    //     $pierna = $this->request->getPostGet('pierna');
+    //     $equipo = $this->socioModel->select('socios.id as id,nombre,codigo_socio,patrocinador')
+    //             ->where('patrocinador', $this->session->id)
+    //             ->join('usuarios', 'socios.idusuario=usuarios.id', 'left')
+    //             ->findAll();
+
+    //     // Para cada socio, verifico si tiene hijos
+    //     foreach ($equipo as &$socio) {
+    //         $hijos = $this->socioModel->where('nodopadre', $socio->id)->countAllResults();
+    //         $socio->tiene_hijos = $hijos > 0 ? true : false;
+    //     }
+
+    //     echo '<pre>'.var_export($equipo, true).'</pre>';exit;
+
+    //     echo json_encode($equipo);
+    // }
+
     public function getSocios() {
+        $pierna = $this->request->getPostGet('pierna'); // 'I' o 'D'
 
-        $pierna = $this->request->getPostGet('pierna');
-        $equipo = $this->socioModel->select('socios.id as id,nombre,codigo_socio,patrocinador')
-                ->where('patrocinador', $this->session->id)
-                ->join('usuarios', 'socios.idusuario=usuarios.id', 'left')
-                ->findAll();
+        $socios_libres = [];
 
-        echo json_encode($equipo);
+        // 1. Verifica si el patrocinador (usuario actual) tiene libre la pierna
+        $patrocinador = $this->socioModel
+            ->select('socios.id as id, nombre, codigo_socio, patrocinador')
+            ->join('usuarios', 'socios.idusuario=usuarios.id', 'left')
+            ->find($this->session->id);
+
+        $hijo_patrocinador = $this->socioModel
+            ->where('nodopadre', $patrocinador->id)
+            ->where('posicion', $pierna)
+            ->first();
+
+        if (!$hijo_patrocinador) {
+            $socios_libres[] = $patrocinador;
+        }
+
+        // 2. Busca en el equipo los socios que tengan libre esa pierna
+        $equipo = $this->socioModel
+            ->select('socios.id as id, nombre, codigo_socio, patrocinador')
+            ->where('patrocinador', $this->session->id)
+            ->join('usuarios', 'socios.idusuario=usuarios.id', 'left')
+            ->findAll();
+
+        foreach ($equipo as $socio) {
+            $hijo = $this->socioModel
+                ->where('nodopadre', $socio->id)
+                ->where('posicion', $pierna)
+                ->first();
+
+            if (!$hijo) {
+                $socios_libres[] = $socio;
+            }
+        }
+        //echo '<pre>'.var_export($socios_libres, true).'</pre>';exit;
+        echo json_encode($socios_libres);
     }
 
     /**
@@ -488,9 +585,9 @@ class Usuarios extends BaseController {
             $data['micodigo'] = $this->socioModel->find($this->session->id);
 
             $data['lideres'] = $this->socioModel->select('socios.id as id,codigo_socio,rango,nombre')
-                                ->join('usuarios', 'usuarios.id=socios.idusuario')
-                                ->join('rangos', 'rangos.id=socios.idrango')
-                                ->findAll();
+                ->join('usuarios', 'usuarios.id=socios.idusuario')
+                ->join('rangos', 'rangos.id=socios.idrango')
+                ->findAll();
 
             if ($data['lideres']) {
                 foreach ($data['lideres'] as $lider) {
@@ -514,10 +611,10 @@ class Usuarios extends BaseController {
             }
 
             $data['tabla_lideres'] = $this->liderModel->select('lideres.id as id, socios.id as idsocio, codigo_socio, nombre,cant_socios')
-                                ->join('socios', 'socios.id=lideres.idsocio')
-                                ->join('usuarios', 'usuarios.id=socios.idusuario')
-                                ->orderBy('cant_socios', 'desc')
-                                ->findAll();
+                ->join('socios', 'socios.id=lideres.idsocio')
+                ->join('usuarios', 'usuarios.id=socios.idusuario')
+                ->orderBy('cant_socios', 'desc')
+                ->findAll();
             
 
             //echo '<pre>'.var_export($data['tabla_lideres'], true).'</pre>';exit;
@@ -534,18 +631,10 @@ class Usuarios extends BaseController {
 
     function setPosition(){
         $id = $this->request->getPostGet('id');
-        $patrocinador = $this->request->getPostGet('patrocinador');
+        //$patrocinador = $this->request->getPostGet('patrocinador');
 
         $info['nodopadre'] = $this->request->getPostGet('posicion');
         $info['posicion'] = $this->request->getPostGet('piernas');
-
-        if ($info['nodopadre'] == 0) {
-            $info['nodopadre'] = $patrocinador;
-        }
-
-        if ($info['nodopadre'] == $id) {
-            $info['nodopadre'] = $patrocinador;
-        }
 
         $data = [
             'nodopadre'=> $info['nodopadre'],
@@ -553,8 +642,8 @@ class Usuarios extends BaseController {
         ];
 
         $info['res'] = $this->socioModel->update($id,  $data);
-        //echo $this->db->getLastQuery();
-        //echo json_encode($info);
-        return redirect()->to('tanque-reserva');
+
+        echo json_encode($info);
+        exit;
     }
 }
