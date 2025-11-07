@@ -61,6 +61,8 @@ class Validation extends BaseConfig
         'user'  => 'required',
         'password'   => 'required',
         'idciudad'  => 'greater_than[0]',
+        'idprovincia'  => 'required|greater_than[0]',
+        'idpais'  => 'required|greater_than[0]',
     ];
 
     public $insertNewMember_errors = [

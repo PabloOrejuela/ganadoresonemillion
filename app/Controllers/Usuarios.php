@@ -174,10 +174,9 @@ class Usuarios extends BaseController {
                 'telefono_2' => trim($this->request->getPostGet('telefono_2')),
                 'email' => $this->request->getPostGet('email'),
                 'pais' => strtoupper($this->request->getPostGet('pais')),
+                'idpais' => strtoupper($this->request->getPostGet('idpais')),
                 'idciudad' => $this->request->getPostGet('idciudad'),
                 'idprovincia' => $this->request->getPostGet('idprovincia'),
-                'provincia' => $this->request->getPostGet('provincia'),
-                'ciudad' => $this->request->getPostGet('ciudad'),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
                 'suscripción' => $this->request->getPostGet('suscripción'),
                 'acuerdo_terminos' => $this->request->getPostGet('chkTerminos'),
@@ -205,6 +204,13 @@ class Usuarios extends BaseController {
                 $userExist = $this->usuarioModel->select('cedula')->where('cedula', $usuario['cedula'])->findAll();
 
                 if (!$userExist) {
+
+                    if ($usuario['idpais'] != "47") {
+                        $usuario['idciudad'] = 225;
+                        $usuario['idprovincia'] = 26;
+                    }
+
+                    //echo '<pre>'.var_export($usuario, true).'</pre>';exit;
                     //Inserto el nuevo usuario
                     $user = $this->usuarioModel->insert($usuario);
 
@@ -304,9 +310,10 @@ class Usuarios extends BaseController {
             $data['sistema'] = $this->sistemaModel->findAll();
             $data['provincias'] = $this->provinciaModel->findAll();
             $data['ciudades'] = $this->ciudadModel->findAll();
+            $data['paises'] = $this->paisModel->findAll();
 
             $data['perfil'] = $this->usuarioModel->find($id);
-            $data['ciudad'] = $this->ciudadModel->where('id', $data['perfil']->idciudad)->find();
+            $data['ciudad'] = $this->ciudadModel->where('id', $data['perfil']->idciudad)->first();
 
             $data['title'] = 'Mis datos';
             $data['subtitle']='Editar datos del usuario';
@@ -349,6 +356,8 @@ class Usuarios extends BaseController {
                 'cedula' => strtoupper($this->request->getPostGet('cedula')),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
                 'email' => $this->request->getPostGet('email'),
+                'idpais' => strtoupper($this->request->getPostGet('idpais')),
+                'idprovincia' => strtoupper($this->request->getPostGet('idprovincia')),
                 'idciudad' => strtoupper($this->request->getPostGet('idciudad')),
                 'acuerdo_terminos' => strtoupper($this->request->getPostGet('acuerdo_terminos')),
             ];

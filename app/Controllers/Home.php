@@ -127,7 +127,7 @@ class Home extends BaseController {
             'user' => strtoupper($this->request->getPostGet('user')),
             'password' => $this->request->getPostGet('password'),
         ];
-        
+
         $this->validation->setRuleGroup('login');
         
         if (!$this->validation->withRequest($this->request)->run()) {
@@ -156,7 +156,7 @@ class Home extends BaseController {
             if ($estado == 0) {
                 return redirect()->to('/');
             }else{
-                
+                //echo '<pre>'.var_export(password_verify($data['password'], $usuario[0]->password), true).'</pre>';exit;
                 if (isset($usuario) && $usuario != NULL && password_verify($data['password'], $usuario[0]->password)) {
                     //valido el login y pongo el id en sesion  && $usuario->id != 1 
 
@@ -491,6 +491,7 @@ class Home extends BaseController {
      **/
     public function miWeb($idpatrocinador, $patrocinador) {
 
+        $data['paises'] = $this->paisModel->findAll();
         $data['provincias'] = $this->provinciaModel->findAll();
         $data['ciudades'] = $this->ciudadModel->findAll();
         $data['nombre'] = $patrocinador;
@@ -501,6 +502,17 @@ class Home extends BaseController {
         //$data['main_content'] = 'mi-web/mi-web';
         return view('mi-web/mi-web', $data);
         
+    }
+
+    public function buscar() {
+        $termino = $this->request->getGet('q');
+        $res = $this->paisModel->select('id,nombre')->like('nombre', $termino)->find();
+        echo json_encode([
+            'success' => true, 
+            'mensaje' => 'Exito',
+            'res' => $res,
+        ]);
+        exit;
     }
 
     public function contactos(){

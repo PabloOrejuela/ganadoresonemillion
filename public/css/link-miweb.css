@@ -1,56 +1,102 @@
-.link{
-    text-align: center;
-    padding: 20px;
+.link {
+  text-align: center;
+  padding: 20px;
 }
 
-h2, .card-header, .title-center{
-    text-align: center;
+h2,
+.card-header,
+.title-center {
+  text-align: center;
 }
 
-#link-miweb{
-    background-color: rgb(253, 253, 200, 0.5);
-    margin: 2% auto;
-    width: 60%;
+#link-miweb {
+  background-color: rgb(253, 253, 200, 0.5);
+  margin: 2% auto;
+  width: 60%;
 }
 
-.div-center{
-    text-align: center;
-    margin: 0 como auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
+.div-center {
+  text-align: center;
+  margin: 0 como auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
 }
 
-.label{
-    margin-bottom: 0px !important; 
+.label {
+  margin-bottom: 0px !important;
 }
 
-.input{
-    margin-top: 0px;
+.input {
+  margin-top: 0px;
 }
 
-#logo-gom{
-    width: 200px;
+#logo-gom {
+  width: 200px;
 }
 
-.img-size-100{
-    width: 200px !important;
+.img-size-100 {
+  width: 200px !important;
 }
 
-.img-size-64{
-    width: 64px !important;
+.img-size-64 {
+  width: 64px !important;
 }
 
-#h2-text-left{
-    text-align: left;
+#h2-text-left {
+  text-align: left;
 }
 
-
-#div-provincia-otro-pais, #div-ciudad-otro-pais{
-    display: none;
+#video-plan {
+  text-align: center;
 }
 
-#video-plan{
-    text-align: center;
+#sugerencias-pais {
+  border: 1px solid #ced4da;
+  border-top: none;
+  background: white;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#sugerencias-pais .list-group-item {
+  padding: 6px 10px;
+}
+#sugerencias-pais .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+#div-ecuador {
+  display: none;
+  flex-wrap: wrap;
+  gap: 20px; /* espacio entre columnas */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#div-ecuador.visible {
+  display: flex;
+  opacity: 1;
+}
+
+#div-ecuador > div {
+  flex: 1 1 48%; /* 48% de ancho para que quepan 2 por fila con espacio */
+  min-width: 270px; /* evita que se achiquen demasiado en pantallas pequeñas */
+}
+
+@media (max-width: 768px) {
+  #div-ecuador > div {
+    flex: 1 1 100%; /* en pantallas pequeñas, se apilan */
+  }
+}
+
+.row-fix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start; /* era center, esto evita que se suba */
+  justify-content: flex-start;
+  margin: 0 -0.5rem;
+  position: relative;
+  z-index: 1;
 }

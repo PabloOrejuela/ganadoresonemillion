@@ -13,7 +13,7 @@ class UsuarioModel extends Model {
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nombre','cedula','user','password','telefono','telefono_2','direccion','email','estado','idrol','logged','ip','estado','acuerdo_terminos'
+        'nombre','cedula','user','password','telefono','telefono_2','direccion','email','estado','idrol','logged','ip','estado','acuerdo_terminos','idciudad','idpais','idprovincia'
     ];
 
     protected bool $allowEmptyInserts = false;

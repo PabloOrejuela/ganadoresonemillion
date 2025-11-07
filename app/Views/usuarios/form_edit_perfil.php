@@ -125,14 +125,44 @@
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-md-6">
-                    <label for="validationCustom04" class="form-label">Provincia</label>
-                    <select class="form-select" id="validationCustomProvincias" name="idprovincia" required>
+                    <label for="idpais" class="form-label">País</label>
+                    <select class="form-select" id="idpais" disabled>
+                        <option selected disabled value="">--Escoja una provincia--</option>
+                        <?php
+
+                            if ($paises) {
+                                foreach ($paises as $key => $pais) {
+                                    if ($pais->id == $perfil->idpais) {
+                                        echo '<option value="'.$pais->id.'" selected>'.$pais->nombre.'</option>';
+                                    }else{
+                                        echo '<option value="'.$pais->id.'">'.$pais->nombre.'</option>';
+                                    }
+                                }
+                            } else {
+                                # code...
+                            }
+                            
+                        ?>
+                    </select>
+                    <input type="hidden" name="idpais" value="<?= $perfil->idpais; ?>">
+                    <div class="invalid-feedback">Por favor seleccione un país.</div>
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-6">
+                    
+                </div>
+                <!--end::Col-->
+                <!--begin::Col-->
+                <div class="col-md-6">
+                    <label for="idprovincia" class="form-label">Provincia / Estado</label>
+                    <select class="form-select" id="idprovincia" disabled>
                         <option selected disabled value="">--Escoja una provincia--</option>
                         <?php
 
                             if ($provincias) {
                                 foreach ($provincias as $key => $provincia) {
-                                    if ($provincia->id == $ciudad[0]->idprovincia) {
+                                    if ($provincia->id == $perfil->idprovincia) {
                                         echo '<option value="'.$provincia->id.'" selected>'.$provincia->provincia.'</option>';
                                     }else{
                                         echo '<option value="'.$provincia->id.'">'.$provincia->provincia.'</option>';
@@ -144,17 +174,18 @@
                             
                         ?>
                     </select>
+                    <input type="hidden" name="idprovincia" value="<?= $perfil->idprovincia; ?>">
                     <div class="invalid-feedback">Por favor seleccione una provincia.</div>
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col-md-6">
-                    <label for="validationCustom05" class="form-label">Ciudad</label>
-                    <select class="form-select" id="validationCustomCiudades" name="idciudad" required>
+                    <label for="idciudad" class="form-label">Ciudad</label>
+                    <select class="form-select" id="idciudad" name="idciudad" disabled>
                         <?php
                             if ($ciudades) {
                                 foreach ($ciudades as $key => $c) {
-                                    if ($c->id == $ciudad[0]->id) {
+                                    if ($c->id == $ciudad->id) {
                                         echo '<option value="'.$c->id.'" selected>'.$c->ciudad.'</option>';
                                     }else{
                                         echo '<option value="'.$c->id.'">'.$c->ciudad.'</option>';
@@ -165,7 +196,8 @@
                             }
                             
                         ?>
-                        </select>
+                    </select>
+                    <input type="hidden" name="idciudad" value="<?= $perfil->idciudad; ?>">
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->

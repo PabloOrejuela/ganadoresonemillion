@@ -69,17 +69,19 @@ class Login extends BaseController {
 
             if ($res) {
 
-            $data['title'] = '';
-            $data['subtitle']='Ingreso al sistema';
+                $data['title'] = '';
+                $data['subtitle']='Ingreso al sistema';
+                $data['msj'] = 'exito';
 
-            $this->session->setFlashdata('mensaje', $data);
-            return redirect()->back()->with(
-                'mensaje', 
-                'Su nueva contraseña ha sido enviada a su email registrado, por favor revise la carpeta de no deseados'
-            );
+                $this->session->setFlashdata('mensaje', $data);
+                return redirect()->back()->with(
+                    'mensaje', 
+                    'Su nueva contraseña ha sido enviada a su email registrado, por favor revise la carpeta de no deseados'
+                );
             }else{
                 $data['title'] = '';
                 $data['subtitle']='Ingreso al sistema';
+                $data['msj'] = 'error';
 
                 $this->session->setFlashdata('mensaje', $data);
                 return redirect()->back()->with(

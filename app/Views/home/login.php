@@ -51,7 +51,8 @@
             <!-- /.col -->
             <div class="col-12">
               <?php
-                if (session('mensaje') && session('mensaje') != '3') {
+                
+                if (session('mensaje1') && session('mensaje1') != '3') {
                   echo'<div class="alert alert-danger mt-2" role="alert">'.session('mensaje').'</div>';
                 }
               ?>

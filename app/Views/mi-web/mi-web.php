@@ -107,7 +107,7 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 						</header>
 						<div class="row">
 							<section class="col-6 col-12-narrower">
-								<form  class="form" method="post" action="<?= site_url(); ?>new-member-insert">
+								<form  class="form" method="post" action="<?= site_url(); ?>new-member-insert" id="form-registro">
 									<div class="row gtr-50">
 										<div class="col-6 col-12-mobile">
 											<label for="nombre">Nombre</label>
@@ -141,41 +141,43 @@ Integridad: Valoramos la honestidad, la transparencia y la ética en todas nuest
 										</div>
 										<div class="col-6 col-12-mobile">
 											<label for="pais">País</label>
-											<input name="pais" class="form-control" placeholder="País" type="text" id="pais" value="Ecuador" readonly />
+											<input 
+												type="text" 
+												id="pais" 
+												name="pais" 
+												class="form-control" 
+												placeholder="Escriba su país" 
+												autocomplete="off" 
+												required
+											>
+											<input type="hidden" id="idpais" name="idpais">
+											<div id="sugerencias-pais" 
+												class="list-group position-absolute" 
+												style="z-index:1000; width:100%;">
+											</div>
 										</div>
-										<div class="col-6 col-12-mobile" id="div-provincia-ecuador">
-											<label for="idprovincia">Provincia</label>
-											<select class="form-select" id="provincias" name="idprovincia" required>
+										<div class="row-fix visible" id="div-ecuador">
+											<div class="col-6 col-12-mobile" id="div-provincia-ecuador">
+												<label for="idprovincia">Provincia</label>
+												<select class="form-select" id="provincias" name="idprovincia" required>
 												<option selected disabled value="">--Escoja una provincia--</option>
 												<?php
 													if ($provincias) {
-														foreach ($provincias as $key => $provincia) {
-															echo '<option value="'.$provincia->id.'">'.$provincia->provincia.'</option>';
-														}
-													} else {
-														# code...
+													foreach ($provincias as $key => $provincia) {
+														echo '<option value="'.$provincia->id.'">'.$provincia->provincia.'</option>';
 													}
-													
+													} else {
+														echo '<option value="0">No hay datos que mostrar</option>';
+													}
 												?>
-											</select>
-										</div>
-										<div class="col-6 col-12-mobile" id="div-provincia-otro-pais">
-											<label for="provincia">Provincia/Estado/Distrito </label>
-											<input name="provincia" class="form-control" placeholder="Provincia/Estado/Distrito" type="text" id="provincia"/>
-										</div>
-										<div class="col-6 col-12-mobile" id="div-ciudad-otro-pais">
-											<label for="ciudad">Ciudad</label>
-											<input name="ciudad" class="form-control" placeholder="ciudad" type="text" id="ciudad"/>
-										</div>
-										<div class="col-6 col-12-mobile" id="div-ciudad-ecuador">
-											<label for="idciudad">Ciudad</label>
-											<select 
-												class="form-select" 
-												id="idciudad" 
-												name="idciudad" 
-												required 
-												disabled>
-											</select>
+												</select>
+											</div>
+
+											<div class="col-md-5 col-10 mb-3" id="div-ciudad-ecuador">
+												<label for="idciudad">Ciudad</label>
+													<select class="form-select" id="idciudad" name="idciudad" required>
+												</select>
+											</div>
 										</div>
 										<div class="col-6 col-12-mobile">
 											<label for="direccion">Dirección</label>

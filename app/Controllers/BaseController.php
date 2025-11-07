@@ -15,6 +15,7 @@ use App\Models\CiudadModel;
 use App\Models\HistRangoModel;
 use App\Models\LiderModel;
 use App\Models\PagoModel;
+use App\Models\PaisModel;
 use App\Models\PaqueteModel;
 use App\Models\PedidoModel;
 use App\Models\ProvinciaModel;
@@ -75,6 +76,7 @@ abstract class BaseController extends Controller
         $this->histRangoModel = new HistRangoModel($this->db);
         $this->liderModel = new LiderModel($this->db);
         $this->pagoModel = new PagoModel($this->db);
+        $this->paisModel = new PaisModel($this->db);
         $this->paqueteModel = new PaqueteModel($this->db);
         $this->pedidoModel = new PedidoModel($this->db);
         $this->provinciaModel = new ProvinciaModel($this->db);
